@@ -1,17 +1,1 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["iad1"],
-  "functions": {
-    "api/recipe.js": { "maxDuration": 20 }
-  },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "no-referrer" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(self)" }
-      ]
-    }
-  ]
-}
+{"$schema":"https://openapi.vercel.sh/vercel.json","rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
