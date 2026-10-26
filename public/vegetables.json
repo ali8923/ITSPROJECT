@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "Tomato",
+        "colorTheme": "red",
+        "ecoScore": 92,
+        "humanBenefits": "Rich in lycopene and antioxidants.",
+        "weakness": "Frost",
+        "retreat": 1
+    },
+    {
+        "id": 2,
+        "name": "Broccoli",
+        "colorTheme": "green",
+        "ecoScore": 95,
+        "humanBenefits": "Packed with vitamins C and K.",
+        "weakness": "Heat",
+        "retreat": 1
+    },
+    {
+        "id": 3,
+        "name": "Choy Sum",
+        "colorTheme": "green",
+        "ecoScore": 88,
+        "humanBenefits": "Great source of fiber and iron.",
+        "weakness": "Drought",
+        "retreat": 1
+    }
+]
