@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booth sign: Market Kitchen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;900&display=swap">
+<style>
+  /* A5 portrait booth sign. Print at 100% scale, "Background graphics" on. */
+  @page { size: A5 portrait; margin: 10mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans TC", "PingFang HK", sans-serif; color: #1c2118; background: #fff; }
+  .sign {
+    width: 128mm; min-height: 186mm; margin: 0 auto; padding: 10mm;
+    border: 2mm solid #2e7d33; border-radius: 6mm; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  }
+  h1 { font-size: 26pt; font-weight: 900; margin: 0; line-height: 1.15; }
+  .en { font-size: 13pt; margin: 1mm 0 0; }
+  .qr {
+    width: 70mm; height: 70mm; margin: 6mm 0; border: 0.6mm dashed #888;
+    display: grid; place-items: center; font-size: 10pt; color: #666; padding: 4mm;
+  }
+  .qr img { width: 100%; height: 100%; image-rendering: pixelated; }
+  .line { font-size: 17pt; font-weight: 900; margin: 0; line-height: 1.35; }
+  .line-en { font-size: 12pt; margin: 1mm 0 0; }
+  .url { font-size: 10pt; margin: 5mm 0 0; word-break: break-all; color: #333; }
+  .draft { font-size: 9pt; color: #8a5a00; margin-top: 4mm; }
+  .help { max-width: 128mm; margin: 8mm auto; font-size: 10pt; color: #444; }
+  @media print { .help { display: none; } }
+</style>
+</head>
+<body>
+  <div class="sign">
+    <div>
+      <h1>農墟廚房</h1>
+      <p class="en">Market Kitchen</p>
+    </div>
+    <div class="qr" id="qr">
+      <!-- Replace this whole div content with <img src="qr.png" alt="QR code"> once the URL is known -->
+      QR 碼待補<br>QR code to be added<br><br>URL: 待確認 / to be confirmed
+    </div>
+    <div>
+      <p class="line">掃一掃，整你嘅蔬菜卡、<br>問 AI 今晚食咩、睇問與答。</p>
+      <p class="line-en">Scan to make your own veg card, get a recipe idea for tonight, and read our Q&amp;A.</p>
+      <p class="url" id="url">待確認 / URL to be confirmed</p>
+    </div>
+  </div>
+
+  <div class="help">
+    <h2>How to finish this sign</h2>
+    <ol>
+      <li>Host <code>index.html</code> and put the final URL in <code>README.md</code> ("Live URL").</li>
+      <li>Make a QR code for that exact URL with any generator you trust, using error correction level <strong>M or higher</strong>. Save it as <code>qr.png</code> (at least 1000×1000 px) next to this file.</li>
+      <li>In this file, replace the contents of <code>&lt;div class="qr"&gt;</code> with <code>&lt;img src="qr.png" alt="QR code"&gt;</code>, and replace the text in <code>&lt;p class="url"&gt;</code> with the URL.</li>
+      <li>Print on A5 at 100% scale. Test-scan the printed sign with an iPhone and an Android phone from about 1 m away before the event.</li>
+    </ol>
+    <p>This panel doesn't print.</p>
+  </div>
+</body>
+</html>

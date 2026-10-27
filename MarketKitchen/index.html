@@ -1,0 +1,1664 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F4EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1F1E1B" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<title>農墟廚房 Market Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+/* ---------- Warm Paper Kitchen: green identity + clay action ---------- */
+/* Every page colour is a token. Green = identity, clay = the one main action per screen and link text. */
+:root {
+  --bg: #F7F4EC;
+  --surface: #FFFDF8;
+  --surface-2: #EFEADF;
+  --fg: #2B2A26;
+  --muted: #6B665C;
+  --line: #E3DDD0;
+  --dash: #C9BFAE;
+  --green: #2F6B45;
+  --on-green: #FFFFFF;
+  --green-soft: #E4EFE3;
+  --green-ink: #24543A;
+  --clay: #B4562F;
+  --on-clay: #FFFFFF;
+  --clay-ink: #A34C2A;
+  --card-shadow: 0 2px 10px rgba(43, 42, 38, 0.05);
+  --bar-shadow: 0 -2px 12px rgba(43, 42, 38, 0.06);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1F1E1B; --surface: #2A2925; --surface-2: #34322D; --fg: #ECE8DF; --muted: #A8A398; --line: #3A3833; --dash: #57534B;
+    --green: #7FC496; --on-green: #1F1E1B; --green-soft: #233A2B; --green-ink: #A9D8B5;
+    --clay: #E08A63; --on-clay: #1F1E1B; --clay-ink: #E08A63;
+    --card-shadow: none; --bar-shadow: 0 -2px 14px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1F1E1B; --surface: #2A2925; --surface-2: #34322D; --fg: #ECE8DF; --muted: #A8A398; --line: #3A3833; --dash: #57534B;
+  --green: #7FC496; --on-green: #1F1E1B; --green-soft: #233A2B; --green-ink: #A9D8B5;
+  --clay: #E08A63; --on-clay: #1F1E1B; --clay-ink: #E08A63;
+  --card-shadow: none; --bar-shadow: 0 -2px 14px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+:root {
+  --font: "Noto Sans TC", system-ui, -apple-system, "PingFang HK", "Microsoft JhengHei", sans-serif;
+  --serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --card-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Noto Sans TC", "PingFang HK", system-ui, sans-serif;
+  /* type scale 28 / 24 / 20 / 17 / 15 / 13 px (root = 17 px; A+ scales everything) */
+  --fs-28: 1.6471rem; --fs-24: 1.4118rem; --fs-20: 1.1765rem; --fs-17: 1rem; --fs-15: .8824rem; --fs-13: .7647rem;
+  --nav-h: 76px;
+  /* legacy names used inside the VegCard block */
+  --text: var(--fg); --border: var(--line); --focus: var(--green);
+}
+
+/* ---------- Base ---------- */
+html { font-size: 106.25%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html[data-large="1"] { font-size: 125%; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font); font-size: var(--fs-17); line-height: 1.7;
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 24px);
+}
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+a { color: var(--clay-ink); text-underline-offset: 3px; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 700; color: var(--fg); }
+h2 { font-size: var(--fs-24); line-height: 1.4; margin: 0 0 16px; text-wrap: balance; }
+h2:focus { outline: none; }
+h3 { font-size: var(--fs-20); line-height: 1.45; margin: 32px 0 12px; }
+h4 { font-size: var(--fs-17); line-height: 1.5; margin: 16px 0 6px; }
+dl.kv dd, .counter, .meta, .coll-count, .qa-num { font-variant-numeric: tabular-nums; }
+.counter, dl.kv dd { font-family: var(--mono); font-weight: 500; }
+svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky; top: 0; z-index: 20; min-height: 72px;
+  display: flex; align-items: center; gap: 8px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px 20px;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.logo { width: 40px; height: 40px; border-radius: 10px; background: var(--green); color: var(--on-green); display: grid; place-items: center; flex: none; }
+.logo svg { width: 22px; height: 22px; fill: currentColor; }
+.brand { flex: 1; min-width: 0; }
+.brand h1 { margin: 0; font-size: var(--fs-20); line-height: 1.25; }
+.brand p { margin: 0; font-size: var(--fs-13); color: var(--muted); line-height: 1.35; }
+.lang {
+  display: inline-flex; min-height: 44px; padding: 3px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; flex: none;
+}
+.lang span { min-width: 34px; display: grid; place-items: center; padding: 0 7px; border-radius: 999px; color: var(--muted); font-weight: 700; font-size: var(--fs-15); }
+.lang span.on { background: var(--green); color: var(--on-green); }
+.tbtn {
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface);
+  color: var(--fg); font-weight: 700; font-size: var(--fs-15); cursor: pointer; flex: none;
+}
+.tbtn[aria-pressed="true"] { background: var(--green-soft); color: var(--green-ink); border-color: var(--green); }
+.draft { margin: 0; padding: 6px 20px; font-size: var(--fs-13); line-height: 1.6; background: var(--surface-2); color: var(--muted); }
+.draft strong { font-weight: 700; }
+
+/* ---------- Layout ---------- */
+main { max-width: 560px; margin: 0 auto; padding: 24px 20px 0; }
+section[hidden] { display: none; }
+.intro { margin: 0 0 16px; color: var(--muted); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 16px 0; }
+.panel h3:first-child { margin-top: 0; }
+.tbc { color: var(--muted); }
+
+/* Section label: a price tag with a punched hole */
+.tag {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 4px 14px 4px 10px;
+  background: var(--green-soft); color: var(--green-ink); font-size: var(--fs-15); font-weight: 700; line-height: 1.4;
+  border-radius: 6px 999px 999px 6px;
+}
+.tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--bg); box-shadow: 0 0 0 1.5px var(--green); flex: none; }
+
+/* Chips: 44 px pills; selected = green-soft + green border + check */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; padding: 0; list-style: none; }
+.chip {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  min-height: 44px; padding: 6px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  font-weight: 500; font-size: var(--fs-15); line-height: 1.3;
+  transition: background-color 180ms ease-out, border-color 180ms ease-out;
+}
+.chip[aria-pressed="true"] { background: var(--green-soft); color: var(--green-ink); border: 1.5px solid var(--green); font-weight: 700; }
+.chip[aria-pressed="true"]::before { content: "✓"; font-weight: 700; }
+
+/* Buttons: one full-width clay primary per screen; the rest are quiet */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding: 12px 20px; border-radius: 14px; cursor: pointer;
+  border: 1px solid var(--clay); background: var(--clay); color: var(--on-clay);
+  font-weight: 700; font-size: var(--fs-17); line-height: 1.3; text-decoration: none; text-align: center;
+}
+.btn:active { transform: translateY(1px); }
+.btn.secondary { background: var(--surface); color: var(--fg); border-color: var(--line); min-height: 44px; font-weight: 500; }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .6; cursor: not-allowed; }
+.primary-wide { width: 100%; }
+.row { display: flex; flex-direction: column; gap: 12px; }
+
+/* ---------- Bottom tab bar ---------- */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: flex; justify-content: center; gap: 8px; min-height: var(--nav-h);
+  background: var(--surface); border-top: 1px solid var(--line); box-shadow: var(--bar-shadow);
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+.nav a {
+  flex: 1 1 0; min-width: 100px; max-width: 160px; min-height: 56px; border-radius: 999px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  color: var(--muted); text-decoration: none; font-size: var(--fs-13); line-height: 1.25; text-align: center; font-weight: 500;
+  -webkit-tap-highlight-color: transparent; transition: background-color 180ms ease-out;
+}
+.nav a .ico { display: grid; place-items: center; }
+.nav a .ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav a[aria-current="page"] { background: var(--green-soft); color: var(--green-ink); font-weight: 700; }
+.nav a span:last-child { overflow-wrap: anywhere; }
+
+/* ---------- VegCard (ported from the VegCard iOS app; 310x440 pt) ---------- */
+.stage { display: flex; flex-direction: column; align-items: center; margin: 8px 0 4px; }
+.vc-persp { perspective: 900px; }
+.vc {
+  --cw: var(--card-w, min(310px, calc(100vw - 40px)));
+  --u: calc(var(--cw) / 310);
+  width: var(--cw); height: calc(var(--cw) * 440 / 310);
+  position: relative; cursor: pointer;
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+  touch-action: pan-y; -webkit-tap-highlight-color: transparent;
+}
+.vc * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.vc:focus-visible { outline: 3px solid var(--focus); outline-offset: 6px; border-radius: calc(18 * var(--u)); }
+.vc-spin { width: 100%; height: 100%; transform-style: preserve-3d; }
+.vc-spin.spinning { animation: vcSpin .7s cubic-bezier(.34, 1.36, .64, 1); }
+@keyframes vcSpin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+.vc-flip {
+  width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.34, 1.3, .64, 1);
+}
+.vc.flipped .vc-flip { transform: rotateY(180deg); }
+.vc-face {
+  position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  font-family: var(--card-font); color: #000; line-height: 1.2;
+}
+.vc-back-face { transform: rotateY(180deg); }
+.vc-shake { animation: vcShake .25s linear 2; }
+@keyframes vcShake { 0%,100% { transform: translate(0,0); } 25% { transform: translate(calc(-3 * var(--u)), calc(2 * var(--u))); } 75% { transform: translate(calc(3 * var(--u)), calc(-2 * var(--u))); } }
+
+/* Standard front */
+.std {
+  height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden;
+  border: calc(6 * var(--u)) solid transparent; border-radius: calc(18 * var(--u));
+  background:
+    linear-gradient(#fff, var(--t-bg)) padding-box,
+    linear-gradient(135deg, var(--t-border), var(--t-primary), var(--t-border)) border-box;
+  box-shadow: 0 calc(6 * var(--u)) calc(14 * var(--u)) rgb(var(--t-primary-rgb) / .4);
+}
+.std::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border: calc(1.5 * var(--u)) solid rgb(255 255 255 / .8); border-radius: calc(12 * var(--u));
+}
+.vc-head {
+  display: flex; align-items: center; gap: calc(6 * var(--u));
+  padding: calc(6 * var(--u)) calc(8 * var(--u)) calc(6 * var(--u));
+}
+.vc-head .nm { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.vc-stage { font-size: calc(9 * var(--u)); font-weight: 900; color: rgb(var(--t-primary-rgb) / .8); margin-bottom: calc(-2 * var(--u)); }
+.vc-name { font-size: calc(22 * var(--u)); font-weight: 900; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vc-eco { display: flex; align-items: center; gap: calc(3 * var(--u)); }
+.vc-eco b { font-size: calc(11 * var(--u)); font-weight: 900; color: var(--t-primary); }
+.vc-eco strong { font-size: calc(22 * var(--u)); font-weight: 800; color: #000; }
+.vc-badge {
+  width: calc(24 * var(--u)); height: calc(24 * var(--u)); border-radius: 50%;
+  background: var(--t-primary); display: grid; place-items: center;
+  box-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) rgb(var(--t-primary-rgb) / .5);
+}
+.vc-badge svg { width: calc(12 * var(--u)); height: calc(12 * var(--u)); fill: #fff; }
+.vc-art {
+  height: calc(var(--cw) * 440 / 310 * .49); margin: 0 calc(6 * var(--u)); flex: none;
+  position: relative; overflow: hidden; border-radius: calc(6 * var(--u));
+  background:
+    radial-gradient(circle at calc(2 * var(--u)) calc(2 * var(--u)), rgb(var(--t-primary-rgb) / .05) calc(2 * var(--u)), transparent calc(2.2 * var(--u))) 0 0 / calc(20 * var(--u)) calc(20 * var(--u)),
+    linear-gradient(135deg, rgb(var(--t-secondary-rgb) / .8), rgb(var(--t-primary-rgb) / .2)),
+    #fff;
+  box-shadow: inset 0 0 0 calc(2 * var(--u)) rgb(var(--t-primary-rgb) / .5), inset 0 calc(3 * var(--u)) calc(3 * var(--u)) rgb(0 0 0 / .1);
+}
+.vc-art .subj {
+  position: absolute; inset: calc(4 * var(--u)); background-position: center; background-repeat: no-repeat; background-size: contain;
+  filter: drop-shadow(0 calc(2 * var(--u)) calc(4 * var(--u)) rgb(0 0 0 / .2));
+}
+.vc-art .subj svg { width: 100%; height: 100%; fill: var(--t-primary); opacity: .85; }
+.vc-art::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay;
+  background: linear-gradient(135deg, rgb(255 255 255 / 0), rgb(255 255 255 / .35), rgb(255 255 255 / 0));
+}
+.vc-moves { padding: 0 calc(8 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u)); }
+.vc-div { height: 1px; background: rgb(var(--t-primary-rgb) / .5); flex: none; }
+.vc-div.soft { background: rgb(var(--t-primary-rgb) / .3); }
+.vc-moves .vc-div:first-child { margin-top: calc(6 * var(--u)); }
+.vc-move { display: flex; align-items: flex-start; gap: calc(8 * var(--u)); }
+.vc-cost { width: calc(30 * var(--u)); display: flex; gap: calc(2 * var(--u)); justify-content: center; flex: none; padding-top: calc(1 * var(--u)); }
+.vc-cost i { width: calc(14 * var(--u)); height: calc(14 * var(--u)); border-radius: 50%; background: var(--t-primary); box-shadow: 0 0 calc(1 * var(--u)) rgb(0 0 0 / .3); }
+.vc-cost i + i { background: rgb(var(--t-primary-rgb) / .6); box-shadow: none; }
+.vc-mt { flex: 1; min-width: 0; }
+.vc-mt b { display: block; font-size: calc(13 * var(--u)); font-weight: 700; color: #000; }
+.vc-mt span {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: calc(9.5 * var(--u)); color: rgb(0 0 0 / .75); line-height: 1.25;
+}
+.vc-dmg { font-size: calc(18 * var(--u)); font-weight: 900; color: #000; }
+.vc-spacer { flex: 1; }
+.vc-foot { display: flex; flex-direction: column; gap: calc(4 * var(--u)); padding-bottom: calc(2 * var(--u)); }
+.vc-wr { display: flex; justify-content: space-between; padding: 0 calc(10 * var(--u)); color: rgb(0 0 0 / .7); align-items: center; }
+.vc-wr b { font-size: calc(8 * var(--u)); font-weight: 900; margin-right: calc(4 * var(--u)); }
+.vc-wr span { font-size: calc(8 * var(--u)); font-weight: 700; }
+.vc-wr em { font-style: normal; font-size: calc(9 * var(--u)); font-weight: 700; color: #ff9500; }
+.vc-cr { display: flex; justify-content: space-between; padding: 0 calc(10 * var(--u)); font-size: calc(7 * var(--u)); font-weight: 600; color: rgb(0 0 0 / .5); }
+
+/* Ultra front */
+.ult {
+  height: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column;
+  border-radius: calc(18 * var(--u));
+  background: linear-gradient(160deg, var(--t-secondary), var(--t-primary)) center / cover no-repeat;
+  box-shadow: 0 calc(6 * var(--u)) calc(14 * var(--u)) rgb(255 149 0 / .8);
+}
+.ult::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  padding: calc(5 * var(--u));
+  background: linear-gradient(135deg, #ffcc00, #ff9500, #ffcc00);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.ult .vc-head { padding: calc(12 * var(--u)) calc(14 * var(--u)) calc(6 * var(--u)); background: linear-gradient(rgb(0 0 0 / .75), rgb(0 0 0 / 0)); }
+.ult .vc-stage { color: #ffcc00; text-shadow: 0 calc(1 * var(--u)) calc(2 * var(--u)) #000; }
+.ult .vc-name { color: #fff; text-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) #000; }
+.ult .vc-eco { gap: calc(4 * var(--u)); }
+.ult .vc-eco b { color: #ffcc00; text-shadow: 0 calc(1 * var(--u)) calc(2 * var(--u)) #000; }
+.ult .vc-eco strong { color: #fff; font-size: calc(26 * var(--u)); font-weight: 900; text-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) #000; }
+.ult .vc-badge { box-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) rgb(var(--t-primary-rgb) / .8); }
+.ult-box {
+  margin: 0 calc(12 * var(--u)); padding: calc(10 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u));
+  background: rgb(0 0 0 / .75); border-radius: calc(10 * var(--u)); border: calc(1.5 * var(--u)) solid rgb(255 204 0 / .8);
+}
+.ult .vc-mt b { color: #ffcc00; }
+.ult .vc-mt span { color: #fff; }
+.ult .vc-dmg { color: #fff; }
+.ult .vc-div { background: rgb(255 204 0 / .5); }
+.ult .vc-foot { background: rgb(0 0 0 / .75); margin-top: calc(12 * var(--u)); padding-top: calc(4 * var(--u)); padding-bottom: calc(8 * var(--u)); }
+.ult .vc-wr { padding: 0 calc(16 * var(--u)); }
+.ult .vc-wr b { color: #ffcc00; }
+.ult .vc-wr span { color: #fff; }
+.ult .vc-cr { color: rgb(255 255 255 / .8); padding: 0 calc(16 * var(--u)); }
+
+/* Back */
+.back {
+  height: 100%; position: relative; border-radius: calc(18 * var(--u)); overflow: hidden;
+  background: linear-gradient(135deg, rgb(52 199 89 / .8), rgb(52 199 89 / .5)), #34c759;
+  border: calc(6 * var(--u)) solid rgb(0 0 0 / .8);
+  box-shadow: 0 0 calc(10 * var(--u)) rgb(0 0 0 / .35);
+  display: grid; place-items: center;
+}
+.back::before { content: ""; position: absolute; inset: calc(4 * var(--u)); border: calc(4 * var(--u)) solid rgb(255 255 255 / .8); border-radius: calc(15 * var(--u)); }
+.back::after { content: ""; position: absolute; inset: calc(6 * var(--u)); border: calc(1.5 * var(--u)) solid rgb(0 0 0 / .3); border-radius: calc(12 * var(--u)); }
+.back-logo { display: flex; flex-direction: column; align-items: center; gap: calc(8 * var(--u)); }
+.back-ring { width: calc(80 * var(--u)); height: calc(80 * var(--u)); border-radius: 50%; background: rgb(255 255 255 / .2); display: grid; place-items: center; }
+.back-dot { width: calc(60 * var(--u)); height: calc(60 * var(--u)); border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 0 calc(4 * var(--u)) rgb(0 0 0 / .33); }
+.back-dot svg { width: calc(32 * var(--u)); height: calc(32 * var(--u)); fill: #34c759; }
+.back-word { font-size: calc(14 * var(--u)); font-weight: 900; color: #fff; letter-spacing: calc(4 * var(--u)); }
+
+.vc.static { cursor: inherit; touch-action: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .vc-flip { transition-duration: .01s; }
+  .vc-spin.spinning, .vc-shake { animation: none; }
+}
+
+
+/* ---------- Ultra hint under the card ---------- */
+.hint {
+  margin: 12px auto 0; display: block; min-height: 44px; padding: 6px 12px; border: 0; background: none; cursor: pointer;
+  font-size: var(--fs-13); font-weight: 700; color: var(--muted); text-align: center; line-height: 1.5;
+}
+.hint.on { color: var(--green-ink); }
+
+/* ---------- Details ---------- */
+dl.kv { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: var(--fs-15); }
+dl.kv dt { color: var(--muted); }
+dl.kv dd { margin: 0; text-align: right; }
+.src { font-size: var(--fs-13); color: var(--muted); margin: 12px 0 0; line-height: 1.6; }
+
+/* ---------- VegCard steps: circles joined by thin lines ---------- */
+.steps { display: flex; align-items: center; list-style: none; margin: 0 0 16px; padding: 0; counter-reset: st; }
+.steps li {
+  display: flex; align-items: center; gap: 6px; flex: none; counter-increment: st;
+  color: var(--muted); font-size: var(--fs-13); font-weight: 500; line-height: 1.3; white-space: nowrap;
+}
+.steps li::before {
+  content: counter(st); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  border: 1px solid var(--dash); font-family: var(--mono); font-size: var(--fs-13); font-weight: 500;
+}
+.steps li + li::after { content: none; }
+.steps li:not(:last-child) { flex: 1 1 auto; }
+.steps li:not(:last-child)::after { content: ""; flex: 1 1 auto; min-width: 8px; height: 1px; background: var(--line); margin: 0 6px; }
+.steps li[aria-current="step"] { color: var(--fg); font-weight: 700; }
+.steps li[aria-current="step"]::before { background: var(--green); border-color: var(--green); color: var(--on-green); }
+.steps li.done::before { background: var(--green-soft); border-color: var(--green); color: var(--green-ink); content: "✓"; font-family: var(--font); }
+.backbtn {
+  min-height: 44px; padding: 0 14px 0 8px; border: 0; background: none; color: var(--fg);
+  font-weight: 700; font-size: var(--fs-15); cursor: pointer; margin: 0 0 8px -8px;
+}
+
+/* Photo slot (choose a photo) */
+.photo-pick {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 150px; margin: 0 0 16px; padding: 16px; border-radius: 14px; cursor: pointer;
+  background: var(--surface); border: 1.5px dashed var(--dash); text-align: center;
+}
+.photo-pick input { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 0; }
+.photo-pick .cam { width: 44px; height: 44px; color: var(--green); }
+.photo-pick .cam svg { width: 44px; height: 44px; stroke-width: 1.6; }
+.photo-pick .t { color: var(--muted); font-size: var(--fs-15); }
+.privacy { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: var(--fs-13); color: var(--muted); }
+.privacy svg.i { width: 15px; height: 15px; }
+.pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 8px 0 12px; }
+.pick .chip { min-height: 48px; font-size: var(--fs-17); }
+.or { margin: 8px 0; color: var(--muted); font-size: var(--fs-15); }
+.more-btn { margin: 4px 0 16px; }
+.name-row { display: flex; gap: 8px; }
+.name-row .input { flex: 1 1 auto; min-width: 0; }
+.name-row .btn { flex: 0 0 auto; }
+.thumb-sm { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); float: right; margin: 0 0 8px 12px; }
+
+/* ---------- Inputs / messages ---------- */
+.filebtn { position: relative; overflow: hidden; }
+.filebtn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 0; }
+.field { display: block; margin: 16px 0 8px; font-weight: 700; font-size: var(--fs-15); }
+.input {
+  width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg); font-size: var(--fs-17);
+}
+.input::placeholder { color: var(--muted); opacity: 1; }
+.msg { margin: 16px 0 0; padding: 12px 16px; border-radius: 14px; background: var(--surface-2); color: var(--fg); font-size: var(--fs-15); }
+.msg:empty { display: none; }
+.stage { display: flex; flex-direction: column; align-items: center; margin: 8px 0 4px; }
+.saved-wrap { text-align: center; }
+.saved-img {
+  display: block; width: min(310px, 100%); height: auto; margin: 0 auto 12px; border-radius: 14px;
+  -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto;
+}
+
+/* ---------- Collection grid: 4 columns of 80 px tiles ---------- */
+.coll-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 32px 0 12px; }
+.coll-head h3 { margin: 0; }
+.coll-count { color: var(--muted); font-size: var(--fs-15); }
+.coll { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.coll li { min-width: 0; }
+.coll button {
+  width: 100%; padding: 0; border: 0; background: none; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; color: var(--fg); font-size: var(--fs-13); font-weight: 500;
+}
+.coll button[disabled] { cursor: default; color: var(--muted); }
+.tile {
+  width: 100%; max-width: 80px; aspect-ratio: 1; border-radius: 10px; overflow: hidden; display: grid; place-items: center;
+  background: var(--surface-2); border: 1.5px dashed var(--dash); color: var(--muted);
+  font-family: var(--serif); font-size: var(--fs-24); font-weight: 700;
+}
+/* Unlocked: the card's own theme colour (from the VegCard theme) as a 3 px border with a pale fill */
+.tile.got { border: 3px solid var(--t-primary); background: var(--t-bg); }
+.tile.got img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile.got svg { width: 55%; height: 55%; fill: var(--t-primary); }
+.coll .lbl { overflow-wrap: anywhere; text-align: center; line-height: 1.3; }
+
+/* ---------- Smart Recipe ---------- */
+.counter { font-size: var(--fs-13); color: var(--muted); text-align: right; margin: 6px 0 0; }
+.status { margin: 16px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--surface-2); color: var(--fg); font-size: var(--fs-15); }
+.status:empty { display: none; }
+.status .btn { margin-top: 12px; width: 100%; }
+.dots { display: inline-flex; gap: 5px; margin-right: 10px; vertical-align: middle; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); opacity: .35; animation: pulse 1.2s ease-in-out infinite; }
+.dots i:nth-child(2) { animation-delay: .2s; }
+.dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes pulse { 0%, 100% { opacity: .35; transform: scale(.85); } 50% { opacity: 1; transform: scale(1); } }
+.recipe { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 16px 0; box-shadow: var(--card-shadow); }
+.recipe .top-row { display: flex; align-items: center; gap: 10px; margin: 0; }
+.badge { display: inline-block; font-size: var(--fs-13); font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--green-soft); color: var(--green-ink); }
+.badge.off { background: var(--surface-2); color: var(--fg); }
+.recipe .meta { color: var(--muted); font-size: var(--fs-13); }
+.recipe h3 { font-size: var(--fs-20); margin: 10px 0 0; }
+.recipe h4 { font-family: var(--font); font-size: var(--fs-15); color: var(--muted); font-weight: 700; }
+.recipe ul, .recipe ol { margin: 6px 0 0; padding-left: 1.8em; font-size: var(--fs-15); }
+.recipe li { margin: 6px 0; }
+.recipe ol li::marker { font-family: var(--mono); color: var(--muted); }
+.allergy { margin: 16px 0 0; font-size: var(--fs-13); color: var(--muted); line-height: 1.6; }
+
+/* ---------- Q&A ---------- */
+details.qa { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin: 0 0 12px; }
+details.qa summary {
+  display: flex; align-items: center; gap: 12px; cursor: pointer; min-height: 56px; padding: 12px 16px; list-style: none;
+  font-family: var(--serif); font-weight: 700; font-size: var(--fs-17); line-height: 1.5;
+}
+details.qa summary::-webkit-details-marker { display: none; }
+.qa-num {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  background: var(--green-soft); color: var(--green-ink); font-family: var(--mono); font-size: var(--fs-13); font-weight: 500;
+}
+.qa-q { flex: 1 1 auto; min-width: 0; }
+details.qa summary::after {
+  content: ""; flex: none; width: 9px; height: 9px; margin: -4px 4px 0 0;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg);
+  transition: transform 180ms ease-out;
+}
+details.qa[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+details.qa .ans { padding: 0 16px 16px 56px; font-size: var(--fs-15); line-height: 1.7; }
+details.qa .ans p { margin: 0 0 10px; }
+.photo-slot {
+  margin: 12px 0; border: 1.5px dashed var(--dash); border-radius: 10px; min-height: 120px; background: var(--surface-2);
+  display: grid; place-items: center; text-align: center; padding: 12px; color: var(--muted); font-size: var(--fs-13);
+}
+.photo-fig { margin: 12px 0; }
+.photo-fig img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.sources { font-size: var(--fs-13); color: var(--clay-ink); margin: 8px 0 0; overflow-wrap: anywhere; }
+.sources .tbc { color: var(--clay-ink); }
+.market { margin: 32px 0 0; font-size: var(--fs-15); }
+.market p { margin: 4px 0; }
+.market strong { font-family: var(--serif); font-size: var(--fs-17); }
+
+/* ---------- Motion: 180 ms fade + 6 px rise ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+main > section:not([hidden]), #st-1:not([hidden]), #st-2:not([hidden]), #st-3:not([hidden]),
+#saved:not([hidden]), .recipe, details.qa[open] .ans, .status:not(:empty) { animation: rise 180ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  main > section:not([hidden]), #st-1:not([hidden]), #st-2:not([hidden]), #st-3:not([hidden]),
+  #saved:not([hidden]), .recipe, details.qa[open] .ans, .status:not(:empty) { animation: none; }
+  .dots i { animation: none; opacity: .8; }
+  .chip, .nav a, details.qa summary::after { transition: none; }
+}
+</style>
+
+<body>
+<header class="top">
+  <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19.6 2.4C10.3 2.6 4.2 7.6 4.2 14.6c0 1.7.4 3.2 1.1 4.4L3 21.3 4.6 23l2.3-2.3c1.3.8 2.9 1.3 4.6 1.3 7.4 0 10-8.3 8.1-19.6zM8.4 18.6c1.4-4.2 4.1-7.4 8.2-9.6-3.1 2.7-5.5 6-7 10.1z"/></svg></span>
+  <div class="brand">
+    <h1 id="t-title">農墟廚房</h1>
+    <p id="t-sub">Market Kitchen</p>
+  </div>
+  <button class="lang" id="btn-lang" type="button"><span data-l="zh" lang="zh-Hant-HK">中</span><span data-l="en" lang="en">EN</span></button>
+  <button class="tbtn" id="btn-large" type="button" aria-pressed="false">A+</button>
+</header>
+<p class="draft" id="draft" hidden></p>
+
+<main id="main">
+  <!-- 1. VegCard -->
+  <section id="r-card" data-route="card" aria-labelledby="h-card">
+    <p class="tag" data-t="tagCard"></p>
+    <h2 id="h-card" tabindex="-1"></h2>
+    <ol class="steps" id="steps">
+      <li data-step="1" data-t="step1"></li>
+      <li data-step="2" data-t="step2"></li>
+      <li data-step="3" data-t="step3"></li>
+    </ol>
+
+    <div id="st-1">
+      <p class="intro" data-t="photoIntro"></p>
+      <label class="photo-pick">
+        <span class="cam" aria-hidden="true"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        <span class="t" data-t="slotText"></span>
+        <span class="privacy"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span data-t="privacy"></span></span>
+        <input type="file" id="in-file" accept="image/*">
+      </label>
+      <label class="btn filebtn primary-wide"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><span data-t="takePhoto"></span><input type="file" id="in-camera" accept="image/*" capture="environment"></label>
+    </div>
+
+    <div id="st-2" hidden>
+      <button class="backbtn" type="button" id="back-2" data-t="back"></button>
+      <img class="thumb-sm" id="scan-thumb" alt="">
+      <h3 id="h-pick" data-t="pickName"></h3>
+      <div class="pick" id="name-chips" role="group" aria-labelledby="h-pick"></div>
+      <button class="btn secondary primary-wide more-btn" type="button" id="name-more" aria-controls="name-chips"></button>
+      <p class="or" data-t="orType"></p>
+      <label class="sr-only" for="in-name" data-t="nameLabel"></label>
+      <div class="name-row">
+        <input class="input" id="in-name" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+        <button class="btn secondary" id="btn-make" type="button" data-t="makeBtn"></button>
+      </div>
+    </div>
+
+    <div id="st-3" hidden>
+      <button class="backbtn" type="button" id="back-3" data-t="back"></button>
+      <div class="stage" id="scan-stage"></div>
+      <p style="margin:12px 0 0"><button class="btn primary-wide" id="btn-save" type="button" data-t="saveBtn"></button></p>
+      <div class="saved-wrap" id="saved" hidden>
+        <h3 data-t="savedH"></h3>
+        <img class="saved-img" id="saved-img" alt="">
+        <p data-t="savedHint"></p>
+        <a class="btn secondary" id="saved-dl" download="vegcard.png" href="#" data-t="download"></a>
+      </div>
+      <div class="panel" id="card-details"></div>
+      <p><button class="btn secondary" id="btn-again" type="button" data-t="scanAnother" style="width:100%"></button></p>
+    </div>
+
+    <p class="msg" id="scan-msg" role="status" aria-live="polite"></p>
+
+    <div class="coll-head"><h3 id="h-coll" data-t="collTitle"></h3><span class="coll-count" id="coll-count"></span></div>
+    <ul class="coll" id="coll" aria-labelledby="h-coll"></ul>
+  </section>
+
+  <!-- 2. Smart Recipe -->
+  <section id="r-recipe" data-route="recipe" aria-labelledby="h-recipe" hidden>
+    <p class="tag" data-t="tagRecipe"></p>
+    <h2 id="h-recipe" tabindex="-1"></h2>
+    <p class="intro" data-t="recipeIntro"></p>
+    <h3 id="h-rcveg" data-t="haveVeg"></h3>
+    <div class="chips" id="rc-veg" role="group" aria-labelledby="h-rcveg"></div>
+    <button class="btn secondary primary-wide more-btn" type="button" id="rc-more" aria-controls="rc-veg"></button>
+    <label class="field" for="rc-extra" data-t="extraLabel"></label>
+    <input class="input" id="rc-extra" type="text" maxlength="60" autocomplete="off" aria-describedby="rc-count">
+    <p class="counter" id="rc-count" aria-live="polite"></p>
+    <p style="margin:14px 0 0"><button class="btn primary-wide" id="btn-recipe" type="button" data-t="recipeBtn"></button></p>
+    <div class="status" id="rc-status" role="status" aria-live="polite"></div>
+    <div id="rc-out"></div>
+  </section>
+
+  <!-- 3. Q&A -->
+  <section id="r-qa" data-route="qa" aria-labelledby="h-qa" hidden>
+    <p class="tag" data-t="tagQa"></p>
+    <h2 id="h-qa" tabindex="-1"></h2>
+    <p class="intro" data-t="qaIntro"></p>
+    <div id="qa-list"></div>
+    <div class="panel market">
+      <p><strong data-t="askFarmer"></strong></p>
+      <p data-t="marketName"></p>
+      <p data-t="marketPlace"></p>
+      <p data-t="marketHours"></p>
+    </div>
+  </section>
+</main>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a href="#card" data-r="card"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><span data-t="navCard"></span></a>
+  <a href="#recipe" data-r="recipe"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 11h16v2a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z"/><path d="M20 12h2M2 12h2M9 7c0-1.5 1-1.5 1-3M14 7c0-1.5 1-1.5 1-3"/></svg></span><span data-t="navRecipe"></span></a>
+  <a href="#qa" data-r="qa"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg></span><span data-t="navQa"></span></a>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ================= Config ================= */
+  var DRAFT = true;
+
+  /* ================= Storage (always try/catch, in-memory fallback) ================= */
+  var mem = {};
+  var store = {
+    get: function (k) {
+      try { var v = window.localStorage.getItem(k); if (v !== null) return v; } catch (e) {}
+      return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null;
+    },
+    set: function (k, v) {
+      mem[k] = String(v);
+      try { window.localStorage.setItem(k, String(v)); } catch (e) {}
+    }
+  };
+
+
+  /* ================= Strings ================= */
+  var T = {
+    zh: {
+      title: "農墟廚房", sub: "中環農墟 · Market Kitchen",
+      draft: "<strong>草稿</strong>：內容仍在核實中，數據及建議僅供參考。",
+      langAria: "Switch to English", largeAria: "放大文字",
+      navCard: "蔬菜卡", navRecipe: "智能食譜", navQa: "問與答",
+      tagCard: "今日蔬菜卡", tagRecipe: "智能食譜", tagQa: "今日問答",
+      hCard: "製作你專屬的蔬菜卡",
+      step1: "拍照", step2: "選擇菜名", step3: "你的卡",
+      photoIntro: "拍下你購買的蔬菜，或從相簿選擇相片。",
+      slotText: "點擊此處，從相簿選擇相片", takePhoto: "拍照",
+      privacy: "相片只會留在你的手機",
+      processing: "正在處理相片……",
+      errDecode: "無法開啟這張相片（可能是 HEIC 格式或檔案太大）。請直接拍攝新相片，或使用螢幕截圖。",
+      back: "‹ 返回", pickName: "這是甚麼蔬菜？", orType: "或自行輸入菜名：", nameLabel: "蔬菜名稱",
+      namePh: "例如：菜心", makeBtn: "製作", needName: "請輸入蔬菜名稱。",
+      errNotFound: "我們暫時未有這種蔬菜的卡，請在上方選擇一款。",
+      cardTextH: "卡上的內容", nutH: "營養（每 100 克生重）", tbc: "待確認",
+      nutSrc: "資料來源：待確認（見 CONTENT_SOURCES.md）",
+      nEnergy: "熱量（kcal）", nProtein: "蛋白質（g）", nFiber: "膳食纖維（g）", nVitC: "維他命 C（mg）", nPotassium: "鉀（mg）",
+      hintLocked: "長按卡牌，解鎖 Ultra 秘密稀有卡……", hintUnlocked: "ULTRA 特別版插圖已解鎖！",
+      hintAria: "解鎖或收起 Ultra 卡（代替長按）",
+      cardAria: "{name}蔬菜卡，{side}。輕按可翻轉。", sideFront: "正面", sideBack: "背面", sideUltra: "Ultra 正面",
+      saveBtn: "儲存卡牌圖片", saving: "正在製作圖片……", savedH: "你的卡",
+      savedHint: "長按上方圖片，選擇「加入相片」或「儲存圖片」。", download: "下載 PNG", saveErr: "未能製作圖片，請再試一次。",
+      savedAlt: "{name} 蔬菜卡圖片", scanAnother: "再製作一張",
+      collTitle: "我的收藏", collCount: "{n} / {total}", showAll: "顯示全部 {n} 款蔬菜", showFewer: "收起",
+      offlineNone: "AI 暫時無法使用，而離線食譜未包括這些蔬菜。請嘗試其他蔬菜，或稍後再試。", collLocked: "未收集", collOpen: "打開{name}卡",
+      hRecipe: "用手上的蔬菜做一道菜",
+      recipeIntro: "選擇你手上的蔬菜，按一下按鈕，AI 便會為你構思一個食譜。",
+      haveVeg: "你有哪些蔬菜？", extraLabel: "其他材料（選填，最多 60 字）", extraPh: "例如：雞蛋、豆腐",
+      count: "{n}/60", recipeBtn: "構思食譜", needVeg: "請選擇最少一種蔬菜。",
+      thinking: "AI 正在構思食譜……約需 10 秒",
+      aiFailed: "AI 暫時無法使用，以下是離線建議。", tryAgain: "再試一次",
+      badgeAi: "AI 建議", badgeOffline: "離線建議",
+      aboutMin: "約 {n} 分鐘", ingredientsH: "材料", stepsH: "做法", tipH: "小貼士",
+      basics: "油、鹽、水",
+      allergy: "如有食物敏感，請留意材料。肉類及蛋類必須徹底煮熟。",
+      hQa: "常見問題", qaIntro: "農墟的蔬菜未必像超級市場的一樣外觀整齊。以下是常見問題。",
+      qTbc: "問題 {n}（待確認）", aTbc: "答案待補（按 CONTENT_SOURCES.md 第 A 部分）。",
+      sourceLbl: "資料來源：", photoSoon: "相片稍後補上",
+      askFarmer: "還有疑問？歡迎直接向攤位的農夫查詢！",
+      marketName: "嘉道理農場暨植物園 中環農墟",
+      marketPlace: "地點：中環天星碼頭（中環 7 號碼頭）",
+      marketHours: "開放日子及時間：待確認"
+    },
+    en: {
+      title: "Market Kitchen", sub: "農墟廚房 · Central Farmers' Market",
+      draft: "<strong>DRAFT</strong>: content is still being checked. Treat figures and tips as provisional.",
+      langAria: "切換至中文", largeAria: "Larger text",
+      tagCard: "Today's VegCard", tagRecipe: "Smart Recipe", tagQa: "Today's Q&A",
+      navCard: "VegCard", navRecipe: "Smart Recipe", navQa: "Q&A",
+      hCard: "Make your own VegCard",
+      step1: "Photo", step2: "Name", step3: "Your card",
+      photoIntro: "Take a photo of what you bought, or choose one.",
+      slotText: "Tap here to choose a photo", takePhoto: "Take photo",
+      privacy: "Your photo stays on your phone",
+      processing: "Processing photo…",
+      errDecode: "This photo couldn't be opened (it may be HEIC or too large). Try taking a new photo, or use a screenshot.",
+      back: "‹ Back", pickName: "Which vegetable is it?", orType: "Or type its name:", nameLabel: "Vegetable name",
+      namePh: "e.g. Choy Sum", makeBtn: "Make card", needName: "Please type the vegetable name.",
+      errNotFound: "We don't have a card for that one yet. Please pick one above.",
+      cardTextH: "On the card", nutH: "Nutrition (per 100 g raw)", tbc: "to be confirmed",
+      nutSrc: "Source: to be confirmed (see CONTENT_SOURCES.md)",
+      nEnergy: "Energy (kcal)", nProtein: "Protein (g)", nFiber: "Dietary fibre (g)", nVitC: "Vitamin C (mg)", nPotassium: "Potassium (mg)",
+      hintLocked: "Long press card to reveal Ultra Secret Rare...", hintUnlocked: "ULTRA ALTERNATE ART UNLOCKED!",
+      hintAria: "Reveal or hide the Ultra card (instead of long press)",
+      cardAria: "{name} veg card, {side}. Tap to flip.", sideFront: "front", sideBack: "back", sideUltra: "Ultra front",
+      saveBtn: "Save card image", saving: "Making the image…", savedH: "Your card",
+      savedHint: "Press and hold the image above, then choose \"Save to Photos\" or \"Download image\".", download: "Download PNG", saveErr: "Couldn't make the image. Please try again.",
+      savedAlt: "{name} veg card image", scanAnother: "Make another card",
+      collTitle: "My collection", collCount: "{n} / {total}", showAll: "Show all {n} vegetables", showFewer: "Show fewer",
+      offlineNone: "The AI isn't available right now, and there is no offline recipe for these vegetables yet. Try other vegetables, or try again later.", collLocked: "Not yet", collOpen: "Open the {name} card",
+      hRecipe: "Smart Recipe",
+      recipeIntro: "Tap the vegetables you have and press one button. AI will suggest a recipe.",
+      haveVeg: "Which vegetables do you have?", extraLabel: "Other ingredients (optional, up to 60 characters)", extraPh: "e.g. eggs, tofu",
+      count: "{n}/60", recipeBtn: "Suggest a recipe", needVeg: "Please pick at least one vegetable.",
+      thinking: "Thinking of a recipe… about 10 s",
+      aiFailed: "The AI isn't available right now. Here is an offline suggestion.", tryAgain: "Try again",
+      badgeAi: "AI suggestion", badgeOffline: "Offline suggestion",
+      aboutMin: "About {n} min", ingredientsH: "Ingredients", stepsH: "Steps", tipH: "Tip",
+      basics: "oil, salt, water",
+      allergy: "Check the ingredients if you have food allergies. Cook meat and eggs thoroughly.",
+      hQa: "Q&A", qaIntro: "Market vegetables don't always look like supermarket ones. Here are common questions.",
+      qTbc: "Question {n} (to be confirmed)", aTbc: "Answer to be added (from CONTENT_SOURCES.md section A).",
+      sourceLbl: "Source: ", photoSoon: "Photo coming soon",
+      askFarmer: "Still curious? Ask the farmer at the stall!",
+      marketName: "KFBG Central Farmers' Market",
+      marketPlace: "Where: Star Ferry Central Pier 7",
+      marketHours: "Days and hours: to be confirmed"
+    }
+  };
+
+  var lang = store.get("mk.lang") === "en" ? "en" : "zh";
+  function L(k, vars) {
+    var s = (T[lang] && T[lang][k] != null) ? T[lang][k] : (T.zh[k] != null ? T.zh[k] : k);
+    if (vars) for (var v in vars) s = s.split("{" + v + "}").join(vars[v]);
+    return s;
+  }
+  function Lx(o) { return o == null ? "" : (typeof o === "string" ? o : (o[lang] != null ? o[lang] : o.zh)); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function colon() { return lang === "zh" ? "：" : ": "; }
+
+  /* ================= Data =================
+     Card fields (id, name, aliases, colorTheme, ecoScore, humanBenefits, environmentalBenefits,
+     weakness, retreat) are copied from VegCard/Data/vegetables.json. Chinese text is a translation.
+     Nutrition: rounded USDA FoodData Central per 100 g raw. null = not yet verified (shows 待確認). */
+  var THEMES = { // VegCard/Services/ThemeProvider.swift (0–1 RGB)
+    red:    { primary: [0.90, 0.22, 0.21], secondary: [1.00, 0.80, 0.82], border: [0.77, 0.16, 0.16], background: [1.00, 0.92, 0.93] },
+    green:  { primary: [0.18, 0.49, 0.20], secondary: [0.78, 0.90, 0.79], border: [0.11, 0.37, 0.13], background: [0.91, 0.96, 0.91] },
+    orange: { primary: [0.94, 0.42, 0.00], secondary: [1.00, 0.88, 0.70], border: [0.90, 0.32, 0.00], background: [1.00, 0.95, 0.88] },
+    purple: { primary: [0.41, 0.11, 0.60], secondary: [0.88, 0.75, 0.91], border: [0.29, 0.08, 0.43], background: [0.95, 0.90, 0.96] },
+    // Not in the iOS ThemeProvider (which falls back to green); added for the new "yellow" cards in the same style. See NOTES.md.
+    yellow: { primary: [0.80, 0.58, 0.00], secondary: [1.00, 0.93, 0.65], border: [0.70, 0.49, 0.00], background: [1.00, 0.97, 0.86] }
+  };
+  function rgb3(a) { return Math.round(a[0] * 255) + " " + Math.round(a[1] * 255) + " " + Math.round(a[2] * 255); }
+  function rgbCss(a, al) { return "rgba(" + Math.round(a[0] * 255) + "," + Math.round(a[1] * 255) + "," + Math.round(a[2] * 255) + "," + (al == null ? 1 : al) + ")"; }
+
+  var NUT_NULL = { energy: null, protein: null, fiber: null, vitC: null, potassium: null };
+  // 40 cards from public/vegetables.json on main (ali8923, "40 Vegcards"). featured = the 8 stall vegetables shown first.
+  // Chinese names = first Chinese alias in that file; Chinese benefit text is a translation (VERIFY.md).
+  var VEG = [
+    { id: "tomato", featured: true, name: { zh: "番茄", en: "Tomato" }, aliases: ["tomato", "番茄", "西紅柿", "西红柿"], colorTheme: "red", ecoScore: 85, humanDamage: 40, ecoDamage: 85,
+      humanBenefits: { en: "Lycopene & Vitamin C boost immunity and protect skin cells.", zh: "茄紅素和維他命C有助提升免疫力、保護皮膚細胞。" },
+      environmentalBenefits: { en: "Grown locally to cut down transport pollution.", zh: "本地種植，減少運輸污染。" },
+      weakness: "Pests", retreat: 1, nutrition: NUT_NULL },
+    { id: "choysum", featured: true, name: { zh: "菜心", en: "Choy Sum" }, aliases: ["choysum", "choy sum", "cai xin", "菜心"], colorTheme: "green", ecoScore: 92, humanDamage: 45, ecoDamage: 120,
+      humanBenefits: { en: "Calcium & Vitamin A strengthen bones and boost energy.", zh: "鈣質和維他命A強健骨骼、補充能量。" },
+      environmentalBenefits: { en: "Grows super fast for quick local harvests.", zh: "生長迅速，本地可快速收成。" },
+      weakness: "Frost", retreat: 1, nutrition: null },
+    { id: "gailan", featured: true, name: { zh: "芥蘭", en: "Chinese Kale" }, aliases: ["gailan", "kai lan", "芥蘭", "芥兰"], colorTheme: "green", ecoScore: 89, humanDamage: 55, ecoDamage: 100,
+      humanBenefits: { en: "Vitamin K & Iron improve blood and cell health.", zh: "維他命K和鐵質有助血液和細胞健康。" },
+      environmentalBenefits: { en: "Tough local crop needing very little care.", zh: "耐種的本地作物，不需太多照料。" },
+      weakness: "Aphis", retreat: 1, nutrition: null },
+    { id: "pakchoi", featured: true, name: { zh: "白菜", en: "Pak Choi" }, aliases: ["pakchoi", "bok choy", "白菜", "pak choi", "小白菜"], colorTheme: "green", ecoScore: 88, humanDamage: 35, ecoDamage: 95,
+      humanBenefits: { en: "Beta-carotene & Vitamin C keep vision sharp.", zh: "β-胡蘿蔔素和維他命C有助保持視力。" },
+      environmentalBenefits: { en: "Farmed without harsh chemical fertilizers.", zh: "種植時不使用刺激性化學肥料。" },
+      weakness: "Insects", retreat: 1, nutrition: NUT_NULL },
+    { id: "eggplant", featured: true, name: { zh: "茄子", en: "Eggplant" }, aliases: ["eggplant", "aubergine", "茄子", "矮瓜"], colorTheme: "purple", ecoScore: 82, humanDamage: 40, ecoDamage: 80,
+      humanBenefits: { en: "Nasunin & Fiber protect heart and digestion.", zh: "茄色素和纖維保護心臟和消化系統。" },
+      environmentalBenefits: { en: "Thrives naturally in warm local summers.", zh: "在本地溫暖的夏季自然生長良好。" },
+      weakness: "Drought", retreat: 2, nutrition: NUT_NULL },
+    { id: "bittermelon", featured: true, name: { zh: "苦瓜", en: "Bitter Melon" }, aliases: ["bittermelon", "bitter gourd", "涼瓜", "苦瓜", "bitter melon", "凉瓜"], colorTheme: "green", ecoScore: 86, humanDamage: 60, ecoDamage: 90,
+      humanBenefits: { en: "Charantin & Vitamin C cleanse your system.", zh: "苦瓜素和維他命C幫助身體「清一清」。" },
+      environmentalBenefits: { en: "Climbing vines protect farm soil from sun damage.", zh: "攀藤遮蔭，保護泥土免受曝曬。" },
+      weakness: "Rot", retreat: 2, nutrition: NUT_NULL },
+    { id: "carrot", featured: true, name: { zh: "紅蘿蔔", en: "Carrot" }, aliases: ["carrot", "紅蘿蔔", "甘筍", "红萝卜", "甘笋"], colorTheme: "orange", ecoScore: 87, humanDamage: 50, ecoDamage: 95,
+      humanBenefits: { en: "Beta-carotene & Vitamin A improve night vision.", zh: "β-胡蘿蔔素和維他命A改善夜視能力。" },
+      environmentalBenefits: { en: "Deep roots naturally loosen and aerate the dirt.", zh: "深根能自然鬆土，令泥土透氣。" },
+      weakness: "Rocks", retreat: 1, nutrition: NUT_NULL },
+    { id: "pumpkin", featured: true, name: { zh: "南瓜", en: "Pumpkin" }, aliases: ["pumpkin", "南瓜"], colorTheme: "orange", ecoScore: 91, humanDamage: 65, ecoDamage: 110,
+      humanBenefits: { en: "Alpha-carotene & Potassium fight sickness and fatigue.", zh: "α-胡蘿蔔素和鉀質對抗疲勞和病痛。" },
+      environmentalBenefits: { en: "Big leaves block weeds without weedkiller.", zh: "寬大的葉片遮擋雜草，毋須使用除草劑。" },
+      weakness: "Mildew", retreat: 2, nutrition: NUT_NULL },
+    { id: "broccoli", featured: false, name: { zh: "西蘭花", en: "Broccoli" }, aliases: ["broccoli", "西蘭花", "青花菜"], colorTheme: "green", ecoScore: 90, humanDamage: 50, ecoDamage: 110,
+      humanBenefits: { en: "Iron & Vitamin K build strong blood and bones.", zh: "鐵質和維他命K有助造血、強健骨骼。" },
+      environmentalBenefits: { en: "Saves water compared to other farm crops.", zh: "比其他農作物更節省用水。" },
+      weakness: "Heat", retreat: 1, nutrition: NUT_NULL },
+    { id: "radish", featured: false, name: { zh: "白蘿蔔", en: "White Radish" }, aliases: ["radish", "daikon", "白蘿蔔"], colorTheme: "green", ecoScore: 84, humanDamage: 35, ecoDamage: 85,
+      humanBenefits: { en: "Glucosinolates & Fiber soothe your stomach.", zh: "芥子油苷和纖維舒緩腸胃。" },
+      environmentalBenefits: { en: "Improves soil health during cooler months.", zh: "在涼爽月份改善泥土健康。" },
+      weakness: "Heat", retreat: 1, nutrition: NUT_NULL },
+    { id: "cucumber", featured: false, name: { zh: "青瓜", en: "Cucumber" }, aliases: ["cucumber", "青瓜", "黃瓜"], colorTheme: "green", ecoScore: 83, humanDamage: 30, ecoDamage: 75,
+      humanBenefits: { en: "Water content & Silica hydrate skin and body.", zh: "水分和矽質滋潤皮膚和身體。" },
+      environmentalBenefits: { en: "Vertical growing saves precious farm space.", zh: "垂直種植，節省寶貴農地。" },
+      weakness: "Fungus", retreat: 1, nutrition: NUT_NULL },
+    { id: "yardlongbean", featured: false, name: { zh: "豆角", en: "Yardlong Bean" }, aliases: ["yardlongbean", "string bean", "豆角", "長豆"], colorTheme: "green", ecoScore: 85, humanDamage: 45, ecoDamage: 90,
+      humanBenefits: { en: "Plant protein & Folate give clean energy.", zh: "植物蛋白和葉酸提供潔淨能量。" },
+      environmentalBenefits: { en: "Enriches the farm soil naturally.", zh: "自然令農地泥土更肥沃。" },
+      weakness: "Aphids", retreat: 1, nutrition: NUT_NULL },
+    { id: "spinach", featured: false, name: { zh: "菠菜", en: "Spinach" }, aliases: ["spinach", "菠菜"], colorTheme: "green", ecoScore: 88, humanDamage: 55, ecoDamage: 105,
+      humanBenefits: { en: "Iron & Magnesium build strength and fight fatigue.", zh: "鐵質和鎂質增強體力、對抗疲勞。" },
+      environmentalBenefits: { en: "Grown in smart shade tunnels to save water.", zh: "在遮陰棚種植，節省用水。" },
+      weakness: "Sun", retreat: 1, nutrition: NUT_NULL },
+    { id: "watercress", featured: false, name: { zh: "西洋菜", en: "Watercress" }, aliases: ["watercress", "西洋菜"], colorTheme: "green", ecoScore: 90, humanDamage: 40, ecoDamage: 100,
+      humanBenefits: { en: "Glucosinolates & Minerals provide daily vitality.", zh: "芥子油苷和礦物質帶來每日活力。" },
+      environmentalBenefits: { en: "Supports clean wetland farming habitats.", zh: "支持潔淨的濕地耕作生境。" },
+      weakness: "Pollution", retreat: 1, nutrition: NUT_NULL },
+    { id: "sweetpotato", featured: false, name: { zh: "番薯", en: "Sweet Potato" }, aliases: ["sweet potato", "番薯", "地瓜"], colorTheme: "orange", ecoScore: 93, humanDamage: 70, ecoDamage: 125,
+      humanBenefits: { en: "Complex carbs & Vitamin B6 keep you active.", zh: "複合碳水化合物和維他命B6讓你保持活躍。" },
+      environmentalBenefits: { en: "Stops soil wash away during heavy rains.", zh: "大雨時防止水土流失。" },
+      weakness: "Weevils", retreat: 1, nutrition: NUT_NULL },
+    { id: "wintermelon", featured: false, name: { zh: "冬瓜", en: "Winter Melon" }, aliases: ["winter melon", "冬瓜"], colorTheme: "green", ecoScore: 86, humanDamage: 35, ecoDamage: 95,
+      humanBenefits: { en: "Potassium & Water cool down body heat.", zh: "鉀質和水分幫助身體降溫。" },
+      environmentalBenefits: { en: "Produces massive food yields from single vines.", zh: "單一藤蔓已有大量收成。" },
+      weakness: "Heavy Rain", retreat: 2, nutrition: NUT_NULL },
+    { id: "lettuce", featured: false, name: { zh: "生菜", en: "Lettuce" }, aliases: ["lettuce", "生菜"], colorTheme: "green", ecoScore: 81, humanDamage: 30, ecoDamage: 75,
+      humanBenefits: { en: "Folate & Vitamin K support clean eating.", zh: "葉酸和維他命K支持清淡飲食。" },
+      environmentalBenefits: { en: "Harvested quickly to maximize land use.", zh: "收成快，善用土地。" },
+      weakness: "Heat", retreat: 1, nutrition: NUT_NULL },
+    { id: "springonion", featured: false, name: { zh: "蔥", en: "Spring Onion" }, aliases: ["spring onion", "scallion", "蔥", "青蔥"], colorTheme: "green", ecoScore: 80, humanDamage: 40, ecoDamage: 80,
+      humanBenefits: { en: "Allicin & Vitamin C fight germs and flavor.", zh: "蒜素和維他命C對抗細菌並增添風味。" },
+      environmentalBenefits: { en: "Naturally scares away bugs from neighbor crops.", zh: "自然驅趕鄰近作物的害蟲。" },
+      weakness: "Rot", retreat: 1, nutrition: NUT_NULL },
+    { id: "waterspinach", featured: false, name: { zh: "通菜", en: "Water Spinach" }, aliases: ["water spinach", "ong choy", "通菜", "空心菜"], colorTheme: "green", ecoScore: 87, humanDamage: 45, ecoDamage: 100,
+      humanBenefits: { en: "Iron & Vitamin A keep muscles feeling great.", zh: "鐵質和維他命A令肌肉保持良好狀態。" },
+      environmentalBenefits: { en: "Grows strong in local humidity with zero sprays.", zh: "在本地潮濕天氣下生長強壯，無需噴藥。" },
+      weakness: "Frost", retreat: 1, nutrition: NUT_NULL },
+    { id: "napacabbage", featured: false, name: { zh: "黃芽白", en: "Napa Cabbage" }, aliases: ["napa cabbage", "chinese cabbage", "黃芽白", "大白菜"], colorTheme: "green", ecoScore: 85, humanDamage: 40, ecoDamage: 90,
+      humanBenefits: { en: "Fiber & Vitamin C aid digestion smoothly.", zh: "纖維和維他命C幫助消化暢順。" },
+      environmentalBenefits: { en: "Classic local winter crop favorite.", zh: "經典的本地冬季作物。" },
+      weakness: "Slugs", retreat: 2, nutrition: NUT_NULL },
+    { id: "sweetcorn", featured: false, name: { zh: "粟米", en: "Sweet Corn" }, aliases: ["sweetcorn", "corn", "粟米", "玉米"], colorTheme: "yellow", ecoScore: 86, humanDamage: 45, ecoDamage: 95,
+      humanBenefits: { en: "Dietary Fiber & Lutein support eye health and digestion.", zh: "膳食纖維和葉黃素有助眼睛健康和消化。" },
+      environmentalBenefits: { en: "Provides natural shade and soil support in polyculture.", zh: "在混種農地提供天然遮蔭和支撐泥土。" },
+      weakness: "Drought", retreat: 1, nutrition: NUT_NULL },
+    { id: "taro", featured: false, name: { zh: "芋頭", en: "Taro" }, aliases: ["taro", "芋頭"], colorTheme: "purple", ecoScore: 89, humanDamage: 50, ecoDamage: 105,
+      humanBenefits: { en: "Resistant starch & Potassium sustain energy and heart health.", zh: "抗性澱粉和鉀質維持能量、照顧心臟健康。" },
+      environmentalBenefits: { en: "Thrives in local wetland soil, preventing erosion.", zh: "在本地濕地泥土生長良好，防止水土流失。" },
+      weakness: "Frost", retreat: 2, nutrition: NUT_NULL },
+    { id: "okra", featured: false, name: { zh: "秋葵", en: "Okra" }, aliases: ["okra", "lady finger", "秋葵"], colorTheme: "green", ecoScore: 88, humanDamage: 35, ecoDamage: 85,
+      humanBenefits: { en: "Soluble fiber & Polyphenols lower blood sugar and soothe stomach.", zh: "水溶性纖維和多酚降低血糖、舒緩腸胃。" },
+      environmentalBenefits: { en: "Heat-tolerant summer crop needing minimal pesticide.", zh: "耐熱的夏季作物，只需極少農藥。" },
+      weakness: "Cold", retreat: 1, nutrition: NUT_NULL },
+    { id: "luffa", featured: false, name: { zh: "絲瓜", en: "Luffa" }, aliases: ["luffa", "sponge gourd", "絲瓜", "勝瓜", "棱角絲瓜"], colorTheme: "green", ecoScore: 87, humanDamage: 40, ecoDamage: 90,
+      humanBenefits: { en: "High water content & Vitamin B soothe inflammation.", zh: "豐富水分和維他命B舒緩發炎。" },
+      environmentalBenefits: { en: "Trellis climber creates natural thermal canopy for crops below.", zh: "沿棚架攀爬，為下方作物形成天然遮蔭。" },
+      weakness: "Wind", retreat: 2, nutrition: NUT_NULL },
+    { id: "chayote", featured: false, name: { zh: "合掌瓜", en: "Chayote" }, aliases: ["chayote", "mirliton", "合掌瓜", "佛手瓜"], colorTheme: "green", ecoScore: 90, humanDamage: 30, ecoDamage: 80,
+      humanBenefits: { en: "Folate & Amino acids bolster immune response.", zh: "葉酸和氨基酸增強免疫反應。" },
+      environmentalBenefits: { en: "Perennial vine requiring low fertilizer for high yield.", zh: "多年生藤蔓，少用肥料亦有高產量。" },
+      weakness: "Frost", retreat: 1, nutrition: NUT_NULL },
+    { id: "ginger", featured: false, name: { zh: "生薑", en: "Ginger" }, aliases: ["ginger", "生薑", "薑"], colorTheme: "orange", ecoScore: 91, humanDamage: 55, ecoDamage: 110,
+      humanBenefits: { en: "Gingerol fights nausea and reduces systemic inflammation.", zh: "薑辣素對抗作嘔、減少全身發炎。" },
+      environmentalBenefits: { en: "Natural underground pest deterrent for neighboring plants.", zh: "在地底自然驅趕鄰近植物的害蟲。" },
+      weakness: "Waterlogging", retreat: 1, nutrition: NUT_NULL },
+    { id: "garlic", featured: false, name: { zh: "大蒜", en: "Garlic" }, aliases: ["garlic", "大蒜", "蒜頭"], colorTheme: "green", ecoScore: 92, humanDamage: 60, ecoDamage: 115,
+      humanBenefits: { en: "Allicin acts as a natural antimicrobial and blood pressure regulator.", zh: "蒜素是天然抗菌劑，亦有助調節血壓。" },
+      environmentalBenefits: { en: "Repels garden pests organically when intercropped.", zh: "與其他作物間種，以有機方式驅趕害蟲。" },
+      weakness: "Fungus", retreat: 1, nutrition: NUT_NULL },
+    { id: "coriander", featured: false, name: { zh: "芫荽", en: "Coriander" }, aliases: ["coriander", "cilantro", "芫荽", "芫茜", "香菜"], colorTheme: "green", ecoScore: 83, humanDamage: 25, ecoDamage: 70,
+      humanBenefits: { en: "Antioxidants help detoxify heavy metals and support digestion.", zh: "抗氧化物幫助排走重金屬、支持消化。" },
+      environmentalBenefits: { en: "Attracts beneficial predator insects to organic farms.", zh: "吸引有益的捕食性昆蟲到有機農場。" },
+      weakness: "Heat", retreat: 1, nutrition: NUT_NULL },
+    { id: "celery", featured: false, name: { zh: "西芹", en: "Celery" }, aliases: ["celery", "西芹", "芹菜"], colorTheme: "green", ecoScore: 82, humanDamage: 30, ecoDamage: 75,
+      humanBenefits: { en: "Apigenin & Phthalides relax blood vessels and reduce swelling.", zh: "芹菜素和苯酞放鬆血管、減少腫脹。" },
+      environmentalBenefits: { en: "Efficient water absorption in cool-weather farm beds.", zh: "在涼爽天氣的菜田高效吸收水分。" },
+      weakness: "Drought", retreat: 1, nutrition: NUT_NULL },
+    { id: "bellpepper", featured: false, name: { zh: "燈籠椒", en: "Bell Pepper" }, aliases: ["bell pepper", "sweet pepper", "燈籠椒", "彩椒"], colorTheme: "red", ecoScore: 85, humanDamage: 45, ecoDamage: 90,
+      humanBenefits: { en: "Vitamin A & C exceed daily recommended intake for bright skin.", zh: "維他命A和C超過每日建議攝取量，令皮膚光亮。" },
+      environmentalBenefits: { en: "Highly adaptable for greenhouse space optimization.", zh: "適應力強，善用溫室空間。" },
+      weakness: "Pests", retreat: 1, nutrition: NUT_NULL },
+    { id: "zucchini", featured: false, name: { zh: "翠玉瓜", en: "Zucchini" }, aliases: ["zucchini", "courgette", "翠玉瓜"], colorTheme: "green", ecoScore: 84, humanDamage: 35, ecoDamage: 80,
+      humanBenefits: { en: "Manganese & Lutein strengthen bone structure and eyes.", zh: "錳和葉黃素強健骨骼和眼睛。" },
+      environmentalBenefits: { en: "Fast-growing summer crop maximizing land usage.", zh: "生長迅速的夏季作物，充分利用土地。" },
+      weakness: "Mildew", retreat: 1, nutrition: NUT_NULL },
+    { id: "beetroot", featured: false, name: { zh: "紅菜頭", en: "Beetroot" }, aliases: ["beetroot", "beet", "紅菜頭"], colorTheme: "purple", ecoScore: 89, humanDamage: 50, ecoDamage: 100,
+      humanBenefits: { en: "Nitrates improve athletic endurance and blood circulation.", zh: "硝酸鹽提升運動耐力和血液循環。" },
+      environmentalBenefits: { en: "Deep taproots break up compacted organic soil.", zh: "深直根打散壓實的有機泥土。" },
+      weakness: "Weeds", retreat: 1, nutrition: NUT_NULL },
+    { id: "kale", featured: false, name: { zh: "羽衣甘藍", en: "Kale" }, aliases: ["kale", "curly kale", "羽衣甘藍"], colorTheme: "green", ecoScore: 93, humanDamage: 60, ecoDamage: 120,
+      humanBenefits: { en: "Sulforaphane & Vitamin K offer potent cellular protection.", zh: "蘿蔔硫素和維他命K提供強效細胞保護。" },
+      environmentalBenefits: { en: "Hardy winter crop with high resistance to cooler temperatures.", zh: "耐寒的冬季作物，抵抗低溫能力高。" },
+      weakness: "Caterpillars", retreat: 1, nutrition: NUT_NULL },
+    { id: "mustardgreens", featured: false, name: { zh: "芥菜", en: "Mustard Greens" }, aliases: ["mustard greens", "gai choy", "芥菜"], colorTheme: "green", ecoScore: 86, humanDamage: 40, ecoDamage: 85,
+      humanBenefits: { en: "Glucosinolates stimulate liver detox enzymes.", zh: "芥子油苷刺激肝臟排毒酵素。" },
+      environmentalBenefits: { en: "Acts as a natural bio-fumigant when recycled into soil.", zh: "翻入泥土後可作天然生物燻蒸劑。" },
+      weakness: "Insects", retreat: 1, nutrition: NUT_NULL },
+    { id: "malabarspinach", featured: false, name: { zh: "木耳菜", en: "Malabar Spinach" }, aliases: ["malabar spinach", "木耳菜", "落葵", "皇宮菜"], colorTheme: "purple", ecoScore: 88, humanDamage: 40, ecoDamage: 95,
+      humanBenefits: { en: "Mucilage & Iron soothe mucous membranes and nourish blood.", zh: "黏液和鐵質舒緩黏膜、滋養血液。" },
+      environmentalBenefits: { en: "Extremely heat-resilient, thriving in wet local summers.", zh: "極為耐熱，在本地潮濕的夏季生長旺盛。" },
+      weakness: "Frost", retreat: 1, nutrition: NUT_NULL },
+    { id: "chineseamaranth", featured: false, name: { zh: "莧菜", en: "Chinese Amaranth" }, aliases: ["chinese amaranth", "yin choy", "莧菜", "紅莧菜"], colorTheme: "red", ecoScore: 87, humanDamage: 45, ecoDamage: 95,
+      humanBenefits: { en: "Betalains & Calcium fortify bones and blood health.", zh: "甜菜色素和鈣質強健骨骼和血液健康。" },
+      environmentalBenefits: { en: "C4 photosynthetic plant with high carbon fixation speed.", zh: "C4 光合作用植物，固碳速度快。" },
+      weakness: "Cold", retreat: 1, nutrition: NUT_NULL },
+    { id: "waterchestnut", featured: false, name: { zh: "馬蹄", en: "Water Chestnut" }, aliases: ["water chestnut", "馬蹄", "荸薺"], colorTheme: "yellow", ecoScore: 88, humanDamage: 35, ecoDamage: 85,
+      humanBenefits: { en: "Puchin compound provides natural antibacterial cooling.", zh: "荸薺英提供天然抗菌、清熱作用。" },
+      environmentalBenefits: { en: "Cleansed water filtration in paddy wetland farming.", zh: "在水田濕地耕作中幫助過濾和淨化水質。" },
+      weakness: "Drought", retreat: 2, nutrition: NUT_NULL },
+    { id: "lotusroot", featured: false, name: { zh: "蓮藕", en: "Lotus Root" }, aliases: ["lotus root", "蓮藕"], colorTheme: "yellow", ecoScore: 91, humanDamage: 50, ecoDamage: 110,
+      humanBenefits: { en: "Tannins & Copper enhance immunity and intestinal lining.", zh: "單寧和銅增強免疫力、保護腸道內壁。" },
+      environmentalBenefits: { en: "Stabilizes pond ecology and purifies farm runoff water.", zh: "穩定池塘生態，淨化農場排出的水。" },
+      weakness: "Pollution", retreat: 2, nutrition: NUT_NULL },
+    { id: "snowpea", featured: false, name: { zh: "荷蘭豆", en: "Snow Pea" }, aliases: ["snow pea", "荷蘭豆", "蜜糖豆"], colorTheme: "green", ecoScore: 86, humanDamage: 35, ecoDamage: 85,
+      humanBenefits: { en: "Vitamin C & Plant protein deliver clean metabolic energy.", zh: "維他命C和植物蛋白提供潔淨的代謝能量。" },
+      environmentalBenefits: { en: "Fixes atmospheric nitrogen directly back into the soil.", zh: "將空氣中的氮直接固定回泥土。" },
+      weakness: "Heat", retreat: 1, nutrition: NUT_NULL },
+    { id: "shiitakemushroom", featured: false, name: { zh: "冬菇", en: "Shiitake Mushroom" }, aliases: ["shiitake", "mushroom", "冬菇", "香菇"], colorTheme: "purple", ecoScore: 92, humanDamage: 55, ecoDamage: 115,
+      humanBenefits: { en: "Lentinic acid & Beta-glucans significantly boost immune defense.", zh: "香菇酸和β-葡聚醣大大增強免疫防禦。" },
+      environmentalBenefits: { en: "Decomposes agricultural wood waste into rich compost.", zh: "將農業木材廢料分解成肥沃堆肥。" },
+      weakness: "Dryness", retreat: 1, nutrition: NUT_NULL }
+  ];
+  var VEG_BY = {}; VEG.forEach(function (v) { VEG_BY[v.id] = v; });
+  var WEAK_ZH = { Pests: "蟲害", Frost: "霜凍", Insects: "昆蟲", Aphis: "蚜蟲", Drought: "乾旱", Rot: "腐爛", Rocks: "石頭", Mildew: "霉病",
+    Heat: "炎熱", Fungus: "真菌", Aphids: "蚜蟲", Sun: "烈日", Pollution: "污染", Weevils: "象鼻蟲", "Heavy Rain": "暴雨", Slugs: "蛞蝓",
+    Cold: "寒冷", Wind: "強風", Waterlogging: "水浸", Weeds: "雜草", Caterpillars: "毛蟲", Dryness: "乾燥" };
+  var MOVE_ZH = {
+    "Radiant Glow": "亮肌光芒", "Immune Armor": "免疫護甲", "Vitality Surge": "活力爆發", "Gut Harmonizer": "腸道調和",
+    "Cardio Pulse": "心脈衝擊", "Skeleton Strike": "骨骼一擊", "Nutrient Burst": "營養爆發",
+    "Zero-Mile Transit": "零里運送", "Carbon Sink": "碳匯", "Organic Root": "有機之根", "Hydro Saver": "節水達人",
+    "Eco Habitat": "生態棲地", "Green Footprint": "綠色足跡"
+  };
+  // Ported from CardView.swift humanMoveTitle / ecoMoveTitle (applied to the English text).
+  function humanMoveTitle(text) {
+    var l = text.toLowerCase();
+    if (l.indexOf("skin") >= 0 || l.indexOf("glow") >= 0) return "Radiant Glow";
+    if (l.indexOf("immune") >= 0 || l.indexOf("vitamin") >= 0) return "Immune Armor";
+    if (l.indexOf("energy") >= 0 || l.indexOf("fatigue") >= 0) return "Vitality Surge";
+    if (l.indexOf("digestion") >= 0 || l.indexOf("fiber") >= 0) return "Gut Harmonizer";
+    if (l.indexOf("heart") >= 0 || l.indexOf("blood") >= 0) return "Cardio Pulse";
+    if (l.indexOf("bone") >= 0 || l.indexOf("calcium") >= 0) return "Skeleton Strike";
+    return "Nutrient Burst";
+  }
+  function ecoMoveTitle(text) {
+    var l = text.toLowerCase();
+    if (l.indexOf("local") >= 0 || l.indexOf("transport") >= 0 || l.indexOf("mile") >= 0) return "Zero-Mile Transit";
+    if (l.indexOf("carbon") >= 0 || l.indexOf("emission") >= 0) return "Carbon Sink";
+    if (l.indexOf("organic") >= 0 || l.indexOf("pesticide") >= 0 || l.indexOf("soil") >= 0) return "Organic Root";
+    if (l.indexOf("water") >= 0 || l.indexOf("drought") >= 0) return "Hydro Saver";
+    if (l.indexOf("biodiversity") >= 0 || l.indexOf("habitat") >= 0) return "Eco Habitat";
+    return "Green Footprint";
+  }
+  function cardText(v) {
+    var h = humanMoveTitle(v.humanBenefits.en), e = ecoMoveTitle(v.environmentalBenefits.en);
+    return {
+      name: Lx(v.name),
+      move1: lang === "zh" ? MOVE_ZH[h] : h, text1: Lx(v.humanBenefits),
+      move2: lang === "zh" ? MOVE_ZH[e] : e, text2: Lx(v.environmentalBenefits),
+      weak: (lang === "zh" ? (WEAK_ZH[v.weakness] || v.weakness) : v.weakness) + " ×2",
+      stars: new Array(v.retreat + 1).join("★"),
+      dmg1: String(v.humanDamage || 30), dmg2: String(v.ecoDamage || 100),
+      no: "NO. 0" + v.ecoScore
+    };
+  }
+
+  var PANTRY = [
+    { id: "garlic", zh: "蒜頭", en: "Garlic" }, { id: "ginger", zh: "薑", en: "Ginger" },
+    { id: "egg", zh: "雞蛋", en: "Eggs" }, { id: "tofu", zh: "豆腐", en: "Tofu" },
+    { id: "pork", zh: "免治豬肉", en: "Minced pork" }, { id: "soy", zh: "豉油", en: "Soy sauce" },
+    { id: "oyster", zh: "蠔油", en: "Oyster sauce" }
+  ];
+  var PANTRY_BY = {}; PANTRY.forEach(function (p) { PANTRY_BY[p.id] = p; });
+  var RECIPES = [
+    { id: "r1", name: { zh: "蒜蓉炒菜心", en: "Garlic stir-fried choy sum" }, veg: ["choysum"], pantry: ["garlic"],
+      steps: { zh: ["菜心洗淨，切段。", "蒜頭剁成蓉，下油以中火爆香。", "加入菜心以大火快炒，加少許水和鹽，炒至菜梗變軟即可上碟。"],
+               en: ["Wash the choy sum and cut into lengths.", "Chop the garlic and fry it in oil over medium heat until fragrant.", "Add the choy sum on high heat with a splash of water and a pinch of salt. Stir-fry until the stems soften."] } },
+    { id: "r2", name: { zh: "薑汁炒芥蘭", en: "Gai lan with ginger" }, veg: ["gailan"], pantry: ["ginger"],
+      steps: { zh: ["芥蘭洗淨，較粗的莖可以切開。", "薑切絲，下油爆香。", "加入芥蘭及少許水和鹽，炒至莖身轉色變軟。"],
+               en: ["Wash the gai lan. Split any thick stems.", "Shred the ginger and fry it in oil until fragrant.", "Add the gai lan with a splash of water and salt. Stir-fry until the stems turn bright and tender."] } },
+    { id: "r3", name: { zh: "蠔油灼白菜", en: "Blanched pak choi with oyster sauce" }, veg: ["pakchoi"], pantry: ["oyster"],
+      steps: { zh: ["白菜洗淨，菜梗部分要沖走泥沙。", "煮沸一鍋水，加少許油和鹽，放入白菜焯至軟身。", "撈起瀝乾，淋上蠔油。"],
+               en: ["Wash the pak choi, rinsing soil from the base.", "Boil water with a little oil and salt, then blanch the pak choi until tender.", "Drain and drizzle with oyster sauce."] } },
+    { id: "r4", name: { zh: "番茄炒蛋", en: "Tomato and egg stir-fry" }, veg: ["tomato"], pantry: ["egg"],
+      steps: { zh: ["番茄切件，雞蛋打勻並加少許鹽。", "下油將蛋炒至半熟，盛起。", "炒番茄至出汁，再放回雞蛋拌勻，炒至蛋完全熟透即可。"],
+               en: ["Cut the tomatoes into wedges. Beat the eggs with a pinch of salt.", "Scramble the eggs in oil until half set, then set aside.", "Fry the tomatoes until juicy, return the eggs and stir until the eggs are fully cooked."] } },
+    { id: "r5", name: { zh: "蒜蓉蒸茄子", en: "Steamed eggplant with garlic" }, veg: ["eggplant"], pantry: ["garlic", "soy"],
+      steps: { zh: ["茄子切條。", "蒜蓉用少許油炒香，鋪在茄子上。", "隔水蒸至茄子軟身，淋上少許豉油。"],
+               en: ["Cut the eggplant into strips.", "Fry chopped garlic briefly in a little oil and spread it over the eggplant.", "Steam until the eggplant is very soft, then add a little soy sauce."] } },
+    { id: "r6", name: { zh: "茄子炒肉碎", en: "Eggplant with minced pork" }, veg: ["eggplant"], pantry: ["pork", "garlic", "soy"],
+      steps: { zh: ["茄子切條，蒜頭剁成蓉。", "下油炒香蒜蓉和肉碎，炒至肉完全熟透。", "加入茄子及少許水，炒至茄子軟身，以豉油調味。"],
+               en: ["Cut the eggplant into strips and chop the garlic.", "Fry the garlic and minced pork in oil until the pork is fully cooked.", "Add the eggplant with a splash of water and cook until soft. Season with soy sauce."] } },
+    { id: "r7", name: { zh: "苦瓜炒蛋", en: "Bitter melon and egg" }, veg: ["bittermelon"], pantry: ["egg"],
+      steps: { zh: ["苦瓜切半去籽，切成薄片。", "雞蛋打勻並加少許鹽。", "先將苦瓜炒至軟身，再倒入蛋液，炒至蛋完全熟透。"],
+               en: ["Halve the bitter melon, scoop out the seeds and slice thinly.", "Beat the eggs with a pinch of salt.", "Stir-fry the bitter melon until soft, pour in the eggs and cook until fully set."] } },
+    { id: "r8", name: { zh: "番茄紅蘿蔔湯", en: "Tomato and carrot soup" }, veg: ["tomato", "carrot"], pantry: [],
+      steps: { zh: ["番茄切件，紅蘿蔔去皮切件。", "放入鍋中，加水至蓋過材料。", "煮沸後轉小火，煮至紅蘿蔔軟身，加鹽調味。"],
+               en: ["Cut the tomatoes into wedges. Peel and chunk the carrots.", "Put them in a pot and cover with water.", "Bring to the boil, then simmer until the carrots are soft. Season with salt."] } },
+    { id: "r9", name: { zh: "蒜蓉蒸南瓜", en: "Steamed pumpkin with garlic" }, veg: ["pumpkin"], pantry: ["garlic"],
+      steps: { zh: ["南瓜去籽切件（可保留外皮）。", "蒜蓉用少許油炒香，鋪在南瓜上。", "隔水蒸至筷子能輕易插入南瓜即可。"],
+               en: ["Seed the pumpkin and cut into pieces (the skin can stay on).", "Fry chopped garlic briefly in a little oil and spread it over the pumpkin.", "Steam until a chopstick goes in easily."] } },
+    { id: "r10", name: { zh: "白菜豆腐湯", en: "Pak choi and tofu soup" }, veg: ["pakchoi"], pantry: ["tofu", "ginger"],
+      steps: { zh: ["豆腐切粒，白菜洗淨切段，薑切片。", "水沸後加入薑和豆腐，煮一會兒。", "加入白菜煮至軟身，加鹽調味。"],
+               en: ["Dice the tofu, wash and cut the pak choi, and slice the ginger.", "Bring water to the boil, add the ginger and tofu and simmer briefly.", "Add the pak choi and cook until tender. Season with salt."] } }
+  ];
+
+
+  /* ================= Embedded assets (data block at end of file) ================= */
+  var ASSETS = null;
+  function assets() {
+    if (ASSETS) return ASSETS;
+    if (document.readyState === "loading") return null; // data block may still be streaming in
+    var el = $("asset-data");
+    if (!el) return null;
+    try { ASSETS = JSON.parse(el.textContent); } catch (e) { ASSETS = { ultra: {}, photos: {} }; }
+    return ASSETS;
+  }
+  // Ultra art is loaded on demand from art/<id>.webp (40 images would make index.html ~4.5 MB).
+  function ultraSrc(id) {
+    if (!VEG_BY[id]) return null;
+    var a = assets(); // a standalone build embeds the art in the asset-data block
+    return a && a.ultra && a.ultra[id] ? a.ultra[id] : "art/" + id + ".webp";
+  }
+  function photoSrc(slot) { var a = assets(); return a && a.photos && a.photos[slot] ? a.photos[slot] : null; }
+
+  var LEAF = "M19.6 2.4C10.3 2.6 4.2 7.6 4.2 14.6c0 1.7.4 3.2 1.1 4.4L3 21.3 4.6 23l2.3-2.3c1.3.8 2.9 1.3 4.6 1.3 7.4 0 10-8.3 8.1-19.6zM8.4 18.6c1.4-4.2 4.1-7.4 8.2-9.6-3.1 2.7-5.5 6-7 10.1z";
+  function leafSvg() { return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' + LEAF + '"/></svg>'; }
+
+  /* ================= Card rendering (HTML) ================= */
+  function themeStyle(v) {
+    var t = THEMES[v.colorTheme] || THEMES.green;
+    return "--t-primary:rgb(" + rgb3(t.primary) + ");--t-primary-rgb:" + rgb3(t.primary) +
+      ";--t-secondary:rgb(" + rgb3(t.secondary) + ");--t-secondary-rgb:" + rgb3(t.secondary) +
+      ";--t-border:rgb(" + rgb3(t.border) + ");--t-bg:rgb(" + rgb3(t.background) + ")";
+  }
+  function movesHTML(c, cls) {
+    return '<div class="vc-move"><div class="vc-cost"><i></i></div><div class="vc-mt"><b>' + esc(c.move1) + '</b><span>' + esc(c.text1) +
+      '</span></div><div class="vc-dmg">' + c.dmg1 + '</div></div><div class="vc-div ' + cls + '"></div>' +
+      '<div class="vc-move"><div class="vc-cost"><i></i><i></i></div><div class="vc-mt"><b>' + esc(c.move2) + '</b><span>' + esc(c.text2) +
+      '</span></div><div class="vc-dmg">' + c.dmg2 + '</div></div>';
+  }
+  function headHTML(c, v, stage) {
+    return '<div class="vc-head"><div class="nm"><span class="vc-stage">' + stage + '</span><span class="vc-name">' + esc(c.name) +
+      '</span></div><div class="vc-eco"><b>ECO</b><strong>' + v.ecoScore + '</strong><span class="vc-badge">' + leafSvg() + '</span></div></div>';
+  }
+  function footHTML(c, credit) {
+    return '<div class="vc-foot">' + (credit.indexOf("ULTRA") < 0 ? '<div class="vc-div"></div>' : '') +
+      '<div class="vc-wr"><div><b>WEAKNESS</b><span>' + esc(c.weak) + '</span></div><div><b>RETREAT</b><em>' + c.stars + '</em></div></div>' +
+      '<div class="vc-cr"><span>' + credit + '</span><span>' + c.no + '</span></div></div>';
+  }
+  function stdFrontHTML(v, photo) {
+    var c = cardText(v);
+    var subj = photo ? '<div class="subj" style="background-image:url(' + photo + ')"></div>' : '<div class="subj">' + leafSvg() + '</div>';
+    return '<div class="std">' + headHTML(c, v, "BASIC") + '<div class="vc-art">' + subj + '</div>' +
+      '<div class="vc-moves"><div class="vc-div"></div>' + movesHTML(c, "soft") + '</div><div class="vc-spacer"></div>' +
+      footHTML(c, "★ Rare Harvest • illus. VegCard AI") + '</div>';
+  }
+  function ultraFrontHTML(v) {
+    var c = cardText(v), src = ultraSrc(v.id);
+    var bg = src ? ' style="background-image:url(' + src + ')"' : '';
+    return '<div class="ult"' + bg + '>' + headHTML(c, v, "ULTRA") + '<div class="vc-spacer"></div><div class="ult-box">' + movesHTML(c, "") +
+      '</div>' + footHTML(c, "★ ULTRA RARE • illus. VegCard AI") + '</div>';
+  }
+  function backHTML() {
+    return '<div class="back"><div class="back-logo"><div class="back-ring"><div class="back-dot">' + leafSvg() +
+      '</div></div><div class="back-word">VEGCARD</div></div></div>';
+  }
+
+  /* ================= Card controller: tap = flip, 600 ms long-press = Ultra spin ================= */
+  var LONG_MS = 600, MOVE_TOL = 10;
+  function CardCtl(stage) {
+    var self = this;
+    this.veg = null; this.photo = null; this.flipped = false; this.ultra = false; this.spinning = false;
+    this.timer = 0; this.fired = false; this.start = null; this.spinTO = 0;
+    stage.innerHTML = '<div class="vc-persp"><div class="vc" role="button" tabindex="0"><div class="vc-spin"><div class="vc-flip">' +
+      '<div class="vc-face vc-front-face"></div><div class="vc-face vc-back-face" aria-hidden="true"></div></div></div></div></div>' +
+      '<button class="hint" type="button"></button>';
+    this.el = stage.querySelector(".vc");
+    this.spinEl = stage.querySelector(".vc-spin");
+    this.front = stage.querySelector(".vc-front-face");
+    this.back = stage.querySelector(".vc-back-face");
+    this.hint = stage.querySelector(".hint");
+    this.back.innerHTML = backHTML();
+    var el = this.el;
+    el.addEventListener("pointerdown", function (e) {
+      if (e.button > 0) return;
+      self.cancelPress();
+      self.fired = false;
+      self.start = { x: e.clientX, y: e.clientY };
+      self.timer = setTimeout(function () { self.timer = 0; self.fired = true; self.toggleUltra(); }, LONG_MS);
+    });
+    el.addEventListener("pointermove", function (e) {
+      if (!self.timer || !self.start) return;
+      if (Math.abs(e.clientX - self.start.x) > MOVE_TOL || Math.abs(e.clientY - self.start.y) > MOVE_TOL) self.cancelPress();
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (t) { el.addEventListener(t, function () { self.cancelPress(); }); });
+    el.addEventListener("click", function (e) {
+      if (self.fired) { self.fired = false; e.preventDefault(); return; }
+      self.flip();
+    });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); self.flip(); }
+    });
+    el.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+    el.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    this.hint.addEventListener("click", function () { self.toggleUltra(); });
+    this.spinEl.addEventListener("animationend", function () { self.endSpin(); });
+  }
+  CardCtl.prototype.cancelPress = function () { if (this.timer) { clearTimeout(this.timer); this.timer = 0; } this.start = null; };
+  CardCtl.prototype.reset = function () {
+    this.cancelPress(); this.fired = false; this.flipped = false; this.ultra = false; this.endSpin();
+  };
+  CardCtl.prototype.set = function (veg, photo) { this.reset(); this.veg = veg; this.photo = photo || null; this.render(); };
+  CardCtl.prototype.render = function () {
+    if (!this.veg) return;
+    var v = this.veg;
+    this.el.setAttribute("style", themeStyle(v));
+    this.front.innerHTML = this.ultra ? ultraFrontHTML(v) : stdFrontHTML(v, this.photo);
+    this.el.classList.toggle("flipped", this.flipped);
+    this.front.setAttribute("aria-hidden", this.flipped ? "true" : "false");
+    this.el.setAttribute("aria-label", L("cardAria", { name: Lx(v.name), side: this.flipped ? L("sideBack") : (this.ultra ? L("sideUltra") : L("sideFront")) }));
+    this.hint.textContent = this.ultra ? L("hintUnlocked") : L("hintLocked");
+    this.hint.classList.toggle("on", this.ultra);
+    this.hint.setAttribute("aria-label", L("hintAria"));
+    this.hint.setAttribute("aria-pressed", this.ultra ? "true" : "false");
+  };
+  CardCtl.prototype.flip = function () { if (!this.veg) return; this.flipped = !this.flipped; this.render(); };
+  CardCtl.prototype.toggleUltra = function () {
+    if (!this.veg || this.spinning) return;
+    this.cancelPress();
+    try { if (navigator.vibrate) navigator.vibrate(30); } catch (e) {}
+    this.ultra = !this.ultra;
+    this.flipped = false; // as in the app: the flip container is rebuilt when Ultra toggles
+    this.spinning = true;
+    this.spinEl.classList.remove("spinning");
+    void this.spinEl.offsetWidth;
+    this.spinEl.classList.add("spinning");
+    var self = this;
+    clearTimeout(this.spinTO);
+    this.spinTO = setTimeout(function () { self.endSpin(); }, 1000); // fallback if animationend never fires
+    this.render();
+  };
+  CardCtl.prototype.endSpin = function () {
+    clearTimeout(this.spinTO); this.spinTO = 0; this.spinning = false; this.spinEl.classList.remove("spinning");
+  };
+
+  /* ================= Canvas card drawing (for "save as image") ================= */
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function wrapLines(ctx, text, maxW, maxLines) {
+    var tokens = /\s/.test(text) ? text.split(/(\s+)/) : Array.from(text);
+    var lines = [], cur = "";
+    for (var i = 0; i < tokens.length; i++) {
+      var test = cur + tokens[i];
+      if (ctx.measureText(test).width > maxW && cur.trim() && "。，、；：！？」）".indexOf(tokens[i]) < 0) { lines.push(cur.trim()); cur = tokens[i].trim() ? tokens[i] : ""; }
+      else cur = test;
+    }
+    if (cur.trim()) lines.push(cur.trim());
+    if (lines.length > maxLines) {
+      lines = lines.slice(0, maxLines);
+      var last = lines[maxLines - 1];
+      while (last.length && ctx.measureText(last + "…").width > maxW) last = last.slice(0, -1);
+      lines[maxLines - 1] = last + "…";
+    }
+    return lines;
+  }
+  function fitText(ctx, text, maxW) {
+    if (ctx.measureText(text).width <= maxW) return text;
+    while (text.length && ctx.measureText(text + "…").width > maxW) text = text.slice(0, -1);
+    return text + "…";
+  }
+  function loadImg(src) {
+    return new Promise(function (res, rej) { var i = new Image(); i.onload = function () { res(i); }; i.onerror = rej; i.src = src; });
+  }
+  var CF = '-apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang HK", sans-serif';
+  function F(w, s) { return w + " " + s + "px " + CF; }
+  function leafPath(ctx, x, y, size, color) {
+    ctx.save(); ctx.translate(x, y); ctx.scale(size / 24, size / 24); ctx.fillStyle = color;
+    ctx.fill(new Path2D(LEAF)); ctx.restore();
+  }
+  function drawCard(v, photoImg, ultraImg, ultra) {
+    var W = 310, H = 440, S = 2, c = cardText(v), t = THEMES[v.colorTheme] || THEMES.green;
+    var cv = document.createElement("canvas"); cv.width = (W + 40) * S; cv.height = (H + 40) * S;
+    var ctx = cv.getContext("2d");
+    ctx.scale(S, S); ctx.translate(20, 20);
+    var P = rgbCss(t.primary);
+    // x0/x1: row edges (app: 14 pt padding; Ultra box: 12 pt margin + 10 pt padding). Cost column is 30 pt wide.
+    function move(y, cost, title, text, dmg, dark, x0, x1) {
+      var cc = x0 + 15, tx = x0 + 38, tw = x1 - tx - 34;
+      ctx.fillStyle = P; ctx.beginPath(); ctx.arc(cost === 1 ? cc : cc - 8, y + 8, 7, 0, 7); ctx.fill();
+      if (cost === 2) { ctx.fillStyle = rgbCss(t.primary, .6); ctx.beginPath(); ctx.arc(cc + 8, y + 8, 7, 0, 7); ctx.fill(); }
+      ctx.textBaseline = "top"; ctx.textAlign = "left";
+      ctx.fillStyle = dark ? "#ffcc00" : "#000"; ctx.font = F(700, 13); ctx.fillText(fitText(ctx, title, tw), tx, y);
+      ctx.font = F(400, 9.5); ctx.fillStyle = dark ? "#fff" : "rgba(0,0,0,.75)";
+      wrapLines(ctx, text, tw, 2).forEach(function (ln, i) { ctx.fillText(ln, tx, y + 17 + i * 12); });
+      ctx.textAlign = "right"; ctx.fillStyle = dark ? "#fff" : "#000"; ctx.font = F(900, 18);
+      ctx.fillText(dmg, x1, y); ctx.textAlign = "left";
+    }
+    function header(stageCol, nameCol, ecoCol, scoreSize, shadow) {
+      ctx.textBaseline = "alphabetic";
+      if (shadow) { ctx.shadowColor = "#000"; ctx.shadowBlur = 3; ctx.shadowOffsetY = 1; }
+      ctx.fillStyle = stageCol; ctx.font = F(900, 9); ctx.fillText(ultra ? "ULTRA" : "BASIC", 14, 25);
+      ctx.font = F(900, scoreSize); var sw = ctx.measureText(String(v.ecoScore)).width;
+      ctx.font = F(900, 11); var ew = ctx.measureText("ECO").width;
+      var badgeX = W - 14 - 24, scoreX = badgeX - 4 - sw, ecoX = scoreX - 3 - ew;
+      ctx.fillStyle = nameCol; ctx.font = F(900, 22); ctx.fillText(fitText(ctx, c.name, ecoX - 20), 14, 45);
+      ctx.fillStyle = ecoCol; ctx.font = F(900, 11); ctx.fillText("ECO", ecoX, 43);
+      ctx.fillStyle = nameCol; ctx.font = F(900, scoreSize); ctx.fillText(String(v.ecoScore), scoreX, 45);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      ctx.fillStyle = P; ctx.beginPath(); ctx.arc(badgeX + 12, 36, 12, 0, 7); ctx.fill();
+      leafPath(ctx, badgeX + 6, 30, 12, "#fff");
+    }
+    function footer(dark, credit, y) {
+      ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+      ctx.font = F(900, 8); ctx.fillStyle = dark ? "#ffcc00" : "rgba(0,0,0,.7)"; ctx.fillText("WEAKNESS", 16, y);
+      var ww = ctx.measureText("WEAKNESS ").width;
+      ctx.font = F(700, 8); ctx.fillStyle = dark ? "#fff" : "rgba(0,0,0,.7)"; ctx.fillText(c.weak, 16 + ww, y);
+      ctx.font = F(700, 9); var sw = ctx.measureText(c.stars).width;
+      ctx.fillStyle = "#ff9500"; ctx.fillText(c.stars, W - 16 - sw, y);
+      ctx.font = F(900, 8); ctx.fillStyle = dark ? "#ffcc00" : "rgba(0,0,0,.7)";
+      ctx.fillText("RETREAT", W - 16 - sw - 4 - ctx.measureText("RETREAT").width, y);
+      ctx.font = F(600, 7); ctx.fillStyle = dark ? "rgba(255,255,255,.8)" : "rgba(0,0,0,.5)";
+      ctx.fillText(credit, 16, y + 13); ctx.textAlign = "right"; ctx.fillText(c.no, W - 16, y + 13); ctx.textAlign = "left";
+    }
+    if (!ultra) {
+      ctx.save(); ctx.shadowColor = rgbCss(t.primary, .4); ctx.shadowBlur = 10; ctx.shadowOffsetY = 6;
+      rr(ctx, 0, 0, W, H, 18); var g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#fff"); g.addColorStop(1, rgbCss(t.background));
+      ctx.fillStyle = g; ctx.fill(); ctx.restore();
+      ctx.save(); rr(ctx, 0, 0, W, H, 18); ctx.clip();
+      header(rgbCss(t.primary, .8), "#000", P, 22, false);
+      var ax = 12, ay = 56, aw = W - 24, ah = H * 0.49;
+      ctx.save(); rr(ctx, ax, ay, aw, ah, 6); ctx.clip();
+      ctx.fillStyle = "#fff"; ctx.fillRect(ax, ay, aw, ah);
+      var ag = ctx.createLinearGradient(ax, ay, ax + aw, ay + ah); ag.addColorStop(0, rgbCss(t.secondary, .8)); ag.addColorStop(1, rgbCss(t.primary, .2));
+      ctx.fillStyle = ag; ctx.fillRect(ax, ay, aw, ah);
+      ctx.fillStyle = rgbCss(t.primary, .05);
+      for (var dx = 0; dx < aw; dx += 20) for (var dy = 0; dy < ah; dy += 20) { ctx.beginPath(); ctx.arc(ax + dx + 2, ay + dy + 2, 2, 0, 7); ctx.fill(); }
+      ctx.shadowColor = "rgba(0,0,0,.2)"; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
+      if (photoImg) {
+        var bw = aw - 8, bh = ah - 8, sc = Math.min(bw / photoImg.width, bh / photoImg.height);
+        var iw = photoImg.width * sc, ih = photoImg.height * sc;
+        ctx.drawImage(photoImg, ax + (aw - iw) / 2, ay + (ah - ih) / 2, iw, ih);
+      } else {
+        var ls = Math.min(aw, ah) - 8; ctx.globalAlpha = .85; leafPath(ctx, ax + (aw - ls) / 2, ay + (ah - ls) / 2, ls, P); ctx.globalAlpha = 1;
+      }
+      ctx.shadowColor = "transparent";
+      var sg = ctx.createLinearGradient(ax, ay, ax + aw, ay + ah); sg.addColorStop(0, "rgba(255,255,255,0)"); sg.addColorStop(.5, "rgba(255,255,255,.25)"); sg.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = sg; ctx.fillRect(ax, ay, aw, ah);
+      ctx.restore();
+      rr(ctx, ax, ay, aw, ah, 6); ctx.strokeStyle = rgbCss(t.primary, .5); ctx.lineWidth = 2; ctx.stroke();
+      var my = ay + ah + 6;
+      ctx.fillStyle = rgbCss(t.primary, .5); ctx.fillRect(14, my, W - 28, 1);
+      move(my + 11, 1, c.move1, c.text1, c.dmg1, false, 14, W - 14);
+      ctx.fillStyle = rgbCss(t.primary, .3); ctx.fillRect(14, my + 55, W - 28, 1);
+      move(my + 66, 2, c.move2, c.text2, c.dmg2, false, 14, W - 14);
+      ctx.fillStyle = rgbCss(t.primary, .5); ctx.fillRect(14, H - 38, W - 28, 1);
+      footer(false, "★ Rare Harvest • illus. VegCard AI", H - 23);
+      ctx.restore();
+      rr(ctx, 0, 0, W, H, 18);
+      var bg = ctx.createLinearGradient(0, 0, W, H); bg.addColorStop(0, rgbCss(t.border)); bg.addColorStop(.5, P); bg.addColorStop(1, rgbCss(t.border));
+      ctx.strokeStyle = bg; ctx.lineWidth = 6; ctx.stroke();
+      rr(ctx, 3, 3, W - 6, H - 6, 15); ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = 1.5; ctx.stroke();
+    } else {
+      ctx.save(); ctx.shadowColor = "rgba(255,149,0,.8)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
+      rr(ctx, 0, 0, W, H, 18); ctx.fillStyle = rgbCss(t.primary); ctx.fill(); ctx.restore();
+      ctx.save(); rr(ctx, 0, 0, W, H, 18); ctx.clip();
+      if (ultraImg) {
+        var s2 = Math.max(W / ultraImg.width, H / ultraImg.height), w2 = ultraImg.width * s2, h2 = ultraImg.height * s2;
+        ctx.drawImage(ultraImg, (W - w2) / 2, (H - h2) / 2, w2, h2);
+      }
+      var hg = ctx.createLinearGradient(0, 0, 0, 62); hg.addColorStop(0, "rgba(0,0,0,.75)"); hg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = hg; ctx.fillRect(0, 0, W, 62);
+      header("#ffcc00", "#fff", "#ffcc00", 26, true);
+      var boxH = 120, fy = H - 40, by = fy - 12 - boxH;
+      rr(ctx, 12, by, W - 24, boxH, 10); ctx.fillStyle = "rgba(0,0,0,.75)"; ctx.fill();
+      ctx.strokeStyle = "rgba(255,204,0,.8)"; ctx.lineWidth = 1.5; ctx.stroke();
+      move(by + 12, 1, c.move1, c.text1, c.dmg1, true, 22, W - 22);
+      ctx.fillStyle = "rgba(255,204,0,.5)"; ctx.fillRect(22, by + 60, W - 44, 1);
+      move(by + 70, 2, c.move2, c.text2, c.dmg2, true, 22, W - 22);
+      ctx.fillStyle = "rgba(0,0,0,.75)"; ctx.fillRect(0, fy, W, H - fy);
+      footer(true, "★ ULTRA RARE • illus. VegCard AI", fy + 15);
+      ctx.restore();
+      rr(ctx, 0, 0, W, H, 18);
+      var yg = ctx.createLinearGradient(0, 0, W, H); yg.addColorStop(0, "#ffcc00"); yg.addColorStop(.5, "#ff9500"); yg.addColorStop(1, "#ffcc00");
+      ctx.strokeStyle = yg; ctx.lineWidth = 5; ctx.stroke();
+    }
+    return cv;
+  }
+
+
+  /* ================= Q&A (CONTENT_SOURCES.md section A) =================
+     10 items in the order given, zh/en text word for word. sources: [{label:{zh,en}, url}] still to be
+     added (none were supplied), so each item shows 資料來源：待確認. photo: "holes" (Q1), "size" (Q8). */
+  var QA = [
+    {"id": "q1", "q": {"zh": "為甚麼蔬菜有這麼多洞？", "en": "Why are there so many holes in the vegetables?"}, "a": {"zh": "因為不使用化學合成農藥，昆蟲會啃食葉片。例如黃條跳甲這類小甲蟲，會在菜心、白菜等葉菜上咬出許多細小孔洞。農夫會使用防蟲網、輪作等方法減少蟲害，但難以完全避免。", "en": "Without synthetic chemical pesticides, insects get to the leaves. Small beetles such as flea beetles chew tiny holes in leafy greens like choy sum and pak choi. Farmers reduce this with insect nets and crop rotation, but some holes remain."}, "sources": [], "photo": "holes"},
+    {"id": "q2", "q": {"zh": "有機是否代表完全沒有農藥？", "en": "Does organic mean no pesticides at all?"}, "a": {"zh": "不一定。有機耕作不使用化學合成農藥，但可使用部分天然來源的防治方法，例如漁農自然護理署有機耕作資料提及的苦楝油及天然除蟲菊。研究亦指出，有機食物不一定完全沒有農藥殘餘，但驗出殘餘的機會較低。", "en": "Not exactly. Organic farming does not use synthetic chemical pesticides, but it can use some natural-source controls, such as the neem oil and natural pyrethrins listed in AFCD's organic farming guidance. Research also shows organic food is not always 100% residue-free, though residues are found less often."}, "sources": []},
+    {"id": "q3", "q": {"zh": "如何確認是真正的有機產品？", "en": "How do I know it's really organic?"}, "a": {"zh": "香港沒有法例規管「有機」認證，認證屬自願性質。主要認證機構為香港有機資源中心（HKORC），其標準參考國際有機農業運動聯盟（IFOAM）。顧客可留意認證標籤或證書，或直接向農夫查詢：中環農墟部分農場已獲 HKORC 認證，部分則為自行聲稱有機。", "en": "Hong Kong has no law requiring organic certification; it is voluntary. The main certifier is the Hong Kong Organic Resource Centre (HKORC), whose standards are based on IFOAM's. Check the certification label or certificate, or ask the farmer: at the Central Farmers' Market some farms are HKORC-certified and some are self-claimed organic."}, "sources": []},
+    {"id": "q4", "q": {"zh": "有蟲洞的蔬菜可以食用嗎？", "en": "Is it safe to eat leaves with holes?"}, "a": {"zh": "葉上的細小蟲洞，清洗乾淨後即可食用；被嚴重啃食的部分可以摘除。如葉片內有彎曲的「隧道」痕跡或出現腐爛，則不宜食用該片葉。", "en": "Leaves with small holes are fine to eat once washed; tear off badly chewed parts. Throw away leaves with winding tunnel trails inside them, or any rotten parts."}, "sources": []},
+    {"id": "q5", "q": {"zh": "為甚麼有機蔬菜較貴？", "en": "Why does organic cost more?"}, "a": {"zh": "本地有機農業規模很小：2025 年本地認證有機農場的總產量約為 1,948 公噸。設置防蟲網、人手除草及捉蟲均需要大量時間和人力。（請農夫補充實際原因。）", "en": "Local organic farming is small-scale: certified organic farms produced about 1,948 tonnes in 2025. Insect nets, hand weeding and pest picking take a lot of time and labour. (Farmer to add the real reasons.)"}, "sources": []},
+    {"id": "q6", "q": {"zh": "怎樣清洗蔬菜最好？", "en": "What's the best way to wash vegetables?"}, "a": {"zh": "在水龍頭下以清水徹底沖洗。紅蘿蔔、白蘿蔔等質地較硬的蔬菜，可用乾淨的刷子擦洗。食物安全中心不建議使用洗潔精或特別清潔劑，亦不再認為需要長時間浸泡或汆水，因為這樣會流失營養。", "en": "Rinse thoroughly under clean running water. Scrub firm vegetables like carrots and radish with a clean brush. Hong Kong's Centre for Food Safety does not recommend detergents or special produce washes, and no longer considers long soaking or blanching necessary because it loses nutrients."}, "sources": []},
+    {"id": "q7", "q": {"zh": "有機蔬菜是否較有營養？", "en": "Is organic food more nutritious?"}, "a": {"zh": "不一定。史丹福大學於 2012 年發表的大型文獻回顧發現，有機與一般蔬果的維他命含量並無一致差異；但有機農產品驗出農藥殘餘的機會低約 30%。兩者的農藥水平一般均在安全標準以內。不少人選擇有機食物，是為了減少農藥殘餘、保護環境及支持本地農夫。", "en": "Not necessarily. A large 2012 Stanford review found no consistent difference in vitamin content between organic and conventional produce, but organic produce had about a 30% lower risk of pesticide residues. Levels in both were generally within safety limits. Many people choose organic for fewer residues, the environment, and to support local farmers."}, "sources": []},
+    {"id": "q8", "q": {"zh": "為甚麼有些蔬菜體積較小、外形不佳？", "en": "Why are some vegetables small or odd-shaped?"}, "a": {"zh": "外表並不等於質素。超級市場通常按大小和形狀挑選貨品，許多外形不符標準的蔬菜在農場已被淘汰。聯合國糧食及農業組織的報告舉例指出，一家供應商有 25% 至 30% 的紅蘿蔔因外觀問題而被剔除。農墟讓這些蔬菜仍然有人購買。", "en": "Looks are not the same as quality. Supermarkets often grade produce by size and shape, so many odd-looking vegetables are rejected at the farm. In one example in a UN Food and Agriculture Organization report, a supplier rejected 25–30% of its carrots because of how they looked. Farmers' markets give these vegetables a buyer."}, "sources": [], "photo": "size"},
+    {"id": "q9", "q": {"zh": "買回家後應如何保存？", "en": "How should I store them at home?"}, "a": {"zh": "葉菜應先抹乾水分，用廚房紙包好，放入雪櫃的蔬菜格（高濕度），並最好在一星期內食用。烹調前才清洗，毋須一買回家便清洗。番薯應存放於陰涼、乾爽及避光的地方，不宜放入膠袋。", "en": "Blot leafy greens dry, wrap them in a paper towel and keep them in the fridge's vegetable drawer (high humidity); eat them within about a week. Wash just before cooking, not as soon as you get home. Keep sweet potatoes somewhere cool, dry and dark, not in a bag."}, "sources": []},
+    {"id": "q10", "q": {"zh": "有機蔬菜與「信譽農場」蔬菜有何分別？", "en": "What's the difference between organic and \"Accredited Farm\" vegetables?"}, "a": {"zh": "「信譽農場計劃」是漁農自然護理署推行的自願計劃：參與農場可使用農藥，但須按指引安全使用，漁護署亦會抽樣化驗農藥殘餘。「有機」則指不使用化學合成農藥，並由香港有機資源中心等機構認證。無論是否有機，在香港出售的食物均須符合同一套食物安全標準。", "en": "\"Accredited Farm\" is a voluntary scheme run by the Agriculture, Fisheries and Conservation Department (AFCD): farms may use pesticides but must follow guidance on safe use, and AFCD samples their vegetables for residue tests. \"Organic\" means no synthetic chemical pesticides, certified by bodies such as the HKORC. Organic or not, all food sold in Hong Kong must meet the same food safety standards."}, "sources": []}
+  ];
+
+  /* ================= Header / language / larger text ================= */
+  var large = store.get("mk.large") === "1";
+  function applyChrome() {
+    document.documentElement.lang = lang === "zh" ? "zh-Hant-HK" : "en";
+    document.title = lang === "zh" ? "農墟廚房 Market Kitchen" : "Market Kitchen 農墟廚房";
+    $("t-title").textContent = L("title");
+    $("t-sub").textContent = L("sub");
+    var bl = $("btn-lang"); bl.setAttribute("aria-label", L("langAria"));
+    Array.prototype.forEach.call(bl.children, function (sp) { sp.classList.toggle("on", sp.getAttribute("data-l") === lang); });
+    document.documentElement.setAttribute("data-large", large ? "1" : "0");
+    var bg = $("btn-large"); bg.setAttribute("aria-pressed", large ? "true" : "false"); bg.setAttribute("aria-label", L("largeAria"));
+    var d = $("draft"); d.hidden = !DRAFT; if (DRAFT) d.innerHTML = L("draft");
+    $("nav").setAttribute("aria-label", lang === "zh" ? "主選單" : "Main");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-t]"), function (n) { n.textContent = L(n.getAttribute("data-t")); });
+    $("h-card").textContent = L("hCard"); $("h-recipe").textContent = L("hRecipe"); $("h-qa").textContent = L("hQa");
+    $("in-name").setAttribute("placeholder", L("namePh"));
+    $("rc-extra").setAttribute("placeholder", L("extraPh"));
+  }
+  $("btn-lang").addEventListener("click", function () {
+    lang = lang === "zh" ? "en" : "zh"; store.set("mk.lang", lang); renderAll();
+  });
+  $("btn-large").addEventListener("click", function () {
+    large = !large; store.set("mk.large", large ? "1" : "0"); applyChrome();
+  });
+
+  /* ================= 1. VegCard: Photo -> Name -> Your card ================= */
+  var scanCtl = new CardCtl($("scan-stage"));
+  var step = 1, scanPhoto = null, scanVeg = null, scanBusy = 0, savedURL = null;
+  function setMsg(text, err) { var m = $("scan-msg"); m.textContent = text || ""; m.classList.toggle("err", !!err); }
+  function norm(s) { return String(s || "").trim().toLowerCase().replace(/[\s_\-]/g, ""); }
+  function lookup(q) {
+    var n = norm(q); if (!n) return null;
+    for (var i = 0; i < VEG.length; i++) {
+      var v = VEG[i];
+      if (norm(v.id) === n || norm(v.name.en) === n || norm(v.name.zh) === n) return v;
+      for (var j = 0; j < v.aliases.length; j++) if (norm(v.aliases[j]) === n) return v;
+    }
+    return null;
+  }
+  function goStep(n, moveFocus) {
+    step = n;
+    scanCtl.cancelPress();
+    [1, 2, 3].forEach(function (i) { $("st-" + i).hidden = i !== n; });
+    Array.prototype.forEach.call($("steps").children, function (li) {
+      var s = Number(li.getAttribute("data-step"));
+      if (s === n) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+      li.classList.toggle("done", s < n);
+    });
+    if (moveFocus) {
+      var target = n === 2 ? $("h-pick") : n === 3 ? scanCtl.el : $("h-card");
+      if (target) { if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1"); target.focus({ preventScroll: true }); }
+      $("steps").scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+  }
+  // Decode with the browser's <img> decoder: current Safari/Chrome/Firefox apply EXIF orientation
+  // both when displaying and when drawing to canvas, so the crop below is upright.
+  function decodeFile(file) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { res({ img: img, url: url }); };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error("decode")); };
+      img.src = url;
+    });
+  }
+  function processPhoto(file) {
+    var token = ++scanBusy;
+    setMsg(L("processing"));
+    return decodeFile(file).then(function (r) {
+      if (token !== scanBusy) { URL.revokeObjectURL(r.url); return; }
+      var img = r.img, w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) throw new Error("decode");
+      var side = Math.min(w, h), OUT = 720, PAD = 16;
+      var cv = document.createElement("canvas"); cv.width = OUT; cv.height = OUT;
+      var ctx = cv.getContext("2d");
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, OUT, OUT); // white sticker border, as in the app
+      try { ctx.filter = "saturate(1.35) contrast(1.1)"; } catch (e) {}
+      ctx.drawImage(img, (w - side) / 2, (h - side) / 2, side, side, PAD, PAD, OUT - PAD * 2, OUT - PAD * 2);
+      URL.revokeObjectURL(r.url);
+      scanPhoto = cv.toDataURL("image/jpeg", 0.85);
+      $("scan-thumb").src = scanPhoto;
+      setMsg("");
+      $("in-name").value = "";
+      goStep(2, true);
+    }).catch(function () {
+      if (token !== scanBusy) return;
+      scanPhoto = null;
+      setMsg(L("errDecode"), true);
+    });
+  }
+  ["in-camera", "in-file"].forEach(function (id) {
+    $(id).addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (f) processPhoto(f);
+      e.target.value = "";
+    });
+  });
+  // Pickers show the 8 stall vegetables first; "Show all" reveals the other cards.
+  var showAll = { name: false, rc: false };
+  function visibleVeg(key, sel) { return VEG.filter(function (v) { return showAll[key] || v.featured || (sel && sel[v.id]); }); }
+  function moreButton(id, key) {
+    var b = $(id); b.textContent = showAll[key] ? L("showFewer") : L("showAll", { n: VEG.length });
+    b.setAttribute("aria-expanded", showAll[key] ? "true" : "false");
+  }
+  function renderNameChips() {
+    $("name-chips").innerHTML = visibleVeg("name").map(function (v) {
+      return '<button type="button" class="chip" data-id="' + v.id + '">' + esc(Lx(v.name)) + "</button>";
+    }).join("");
+    moreButton("name-more", "name");
+  }
+  $("name-more").addEventListener("click", function () { showAll.name = !showAll.name; renderNameChips(); });
+  function showCard(v, photo) {
+    try { new Image().src = ultraSrc(v.id); } catch (e) {} // warm the cache so a long-press shows the art at once
+    scanVeg = v; scanPhoto = photo;
+    scanCtl.set(v, photo);
+    $("saved").hidden = true;
+    renderDetails();
+    goStep(3, true);
+  }
+  function makeCard(v) {
+    if (!v) return;
+    setMsg("");
+    addToCollection(v.id, scanPhoto);
+    showCard(v, scanPhoto);
+  }
+  $("name-chips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (b) makeCard(VEG_BY[b.getAttribute("data-id")]);
+  });
+  function makeFromText() {
+    var q = $("in-name").value;
+    if (!norm(q)) { setMsg(L("needName"), true); $("in-name").focus(); return; }
+    var v = lookup(q);
+    if (!v) { setMsg(L("errNotFound"), true); return; }
+    makeCard(v);
+  }
+  $("btn-make").addEventListener("click", makeFromText);
+  $("in-name").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); makeFromText(); } });
+  $("back-2").addEventListener("click", function () { setMsg(""); goStep(1, true); });
+  $("back-3").addEventListener("click", function () { setMsg(""); goStep(scanPhoto ? 2 : 1, true); });
+  $("btn-again").addEventListener("click", function () { setMsg(""); scanPhoto = null; goStep(1, true); });
+
+  function nutRow(label, val) { return "<dt>" + esc(label) + "</dt><dd>" + (val == null ? '<span class="tbc">' + esc(L("tbc")) + "</span>" : esc(val)) + "</dd>"; }
+  function renderDetails() {
+    if (!scanVeg) return;
+    var v = scanVeg, n = v.nutrition || NUT_NULL, c = cardText(v);
+    $("card-details").innerHTML =
+      "<h3>" + esc(L("cardTextH")) + "</h3><p><strong>" + esc(c.move1) + "</strong>" + colon() + esc(c.text1) + "</p>" +
+      "<p><strong>" + esc(c.move2) + "</strong>" + colon() + esc(c.text2) + "</p>" +
+      "<h3>" + esc(L("nutH")) + "</h3><dl class=\"kv\">" +
+      nutRow(L("nEnergy"), n.energy) + nutRow(L("nProtein"), n.protein) + nutRow(L("nFiber"), n.fiber) +
+      nutRow(L("nVitC"), n.vitC) + nutRow(L("nPotassium"), n.potassium) + "</dl>" +
+      '<p class="src">' + esc(L("nutSrc")) + "</p>";
+  }
+
+  var saving = false;
+  $("btn-save").addEventListener("click", function () {
+    if (!scanVeg || saving) return;
+    saving = true;
+    var btn = $("btn-save"); btn.disabled = true; btn.textContent = L("saving");
+    var v = scanVeg, ultra = scanCtl.ultra;
+    var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    Promise.all([
+      fontsReady,
+      scanPhoto ? loadImg(scanPhoto) : Promise.resolve(null),
+      ultra && ultraSrc(v.id) ? loadImg(ultraSrc(v.id)) : Promise.resolve(null)
+    ]).then(function (r) {
+      var cv = drawCard(v, r[1], r[2], ultra);
+      return new Promise(function (res, rej) {
+        if (cv.toBlob) cv.toBlob(function (b) { b ? res(b) : rej(new Error("blob")); }, "image/png");
+        else rej(new Error("blob"));
+      });
+    }).then(function (blob) {
+      if (savedURL) URL.revokeObjectURL(savedURL);
+      savedURL = URL.createObjectURL(blob);
+      var img = $("saved-img"); img.src = savedURL; img.alt = L("savedAlt", { name: Lx(v.name) });
+      var a = $("saved-dl"); a.href = savedURL; a.setAttribute("download", "vegcard-" + v.id + (ultra ? "-ultra" : "") + ".png");
+      $("saved").hidden = false;
+      img.scrollIntoView({ behavior: "smooth", block: "center" });
+    }).catch(function () { setMsg(L("saveErr"), true); })
+      .then(function () { saving = false; btn.disabled = false; btn.textContent = L("saveBtn"); });
+  });
+
+  /* ----- Collection: scanned cards in colour, the rest "?" (localStorage, try/catch) ----- */
+  var COLL_KEY = "mk.coll";
+  function loadColl() {
+    try { var o = JSON.parse(store.get(COLL_KEY) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; }
+  }
+  var coll = loadColl();
+  function thumbOf(photo) {
+    // Small copy so the collection survives a reload without filling the storage quota.
+    return loadImg(photo).then(function (img) {
+      var S = 200, cv = document.createElement("canvas"); cv.width = S; cv.height = S;
+      cv.getContext("2d").drawImage(img, 0, 0, S, S);
+      return cv.toDataURL("image/jpeg", 0.7);
+    });
+  }
+  function saveColl() {
+    var json = JSON.stringify(coll);
+    try { window.localStorage.setItem(COLL_KEY, json); return; } catch (e) {}
+    // Quota full or storage blocked: keep just which cards were found.
+    var ids = {}; Object.keys(coll).forEach(function (k) { ids[k] = ""; });
+    store.set(COLL_KEY, JSON.stringify(ids));
+  }
+  function addToCollection(id, photo) {
+    coll[id] = coll[id] || "";
+    saveColl(); renderColl();
+    if (photo) thumbOf(photo).then(function (t) { coll[id] = t; saveColl(); renderColl(); }).catch(function () {});
+  }
+  function renderColl() {
+    var n = VEG.filter(function (v) { return coll[v.id] != null; }).length;
+    $("coll-count").textContent = L("collCount", { n: n, total: VEG.length });
+    $("coll").innerHTML = VEG.map(function (v) {
+      var got = coll[v.id] != null, nm = esc(Lx(v.name));
+      if (!got) {
+        return '<li><button type="button" disabled aria-label="' + nm + colon() + esc(L("collLocked")) + '"><span class="tile" aria-hidden="true">?</span>' +
+          '<span class="lbl">' + nm + "</span></button></li>";
+      }
+      var inner = coll[v.id] ? '<img src="' + coll[v.id] + '" alt="">' : leafSvg();
+      return '<li><button type="button" data-id="' + v.id + '" aria-label="' + esc(L("collOpen", { name: Lx(v.name) })) + '">' +
+        '<span class="tile got" aria-hidden="true" style="' + themeStyle(v) + '">' + inner + "</span>" +
+        '<span class="lbl">' + nm + "</span></button></li>";
+    }).join("");
+  }
+  $("coll").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]"); if (!b) return;
+    var id = b.getAttribute("data-id");
+    showCard(VEG_BY[id], coll[id] || null);
+  });
+
+  /* ================= 2. Smart Recipe ================= */
+  var RECIPE_TIMEOUT_MS = 15000;
+  var rcSel = {}, rcBusy = false, rcResult = null, rcController = null;
+  function renderRecipeChips() {
+    $("rc-veg").innerHTML = visibleVeg("rc", rcSel).map(function (v) {
+      return '<button type="button" class="chip" data-id="' + v.id + '" aria-pressed="' + (!!rcSel[v.id]) + '">' + esc(Lx(v.name)) + "</button>";
+    }).join("");
+    $("rc-count").textContent = L("count", { n: $("rc-extra").value.length });
+    moreButton("rc-more", "rc");
+  }
+  $("rc-more").addEventListener("click", function () { showAll.rc = !showAll.rc; renderRecipeChips(); });
+  $("rc-veg").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    var id = b.getAttribute("data-id"); rcSel[id] = !rcSel[id];
+    b.setAttribute("aria-pressed", String(!!rcSel[id]));
+  });
+  $("rc-extra").addEventListener("input", function () { $("rc-count").textContent = L("count", { n: $("rc-extra").value.length }); });
+  function selectedVeg() { return VEG.filter(function (v) { return rcSel[v.id]; }).map(function (v) { return v.id; }); }
+
+  // Best built-in RECIPES match: most selected vegetables, then fewest unselected ones.
+  function offlineRecipe(ids) {
+    var best = null, bestScore = -1e9;
+    RECIPES.forEach(function (r) {
+      var have = r.veg.filter(function (v) { return ids.indexOf(v) >= 0; }).length;
+      if (!have) return;
+      var score = have * 10 - (r.veg.length - have) * 3 - r.pantry.length;
+      if (score > bestScore) { bestScore = score; best = r; }
+    });
+    if (!best) return null;
+    var ingredients = best.veg.map(function (id) { return Lx(VEG_BY[id].name); })
+      .concat(best.pantry.map(function (id) { return Lx(PANTRY_BY[id]); }))
+      .concat([L("basics")]);
+    return { title: Lx(best.name), time_min: null, ingredients: ingredients, steps: Lx(best.steps), tip: "", offline: true };
+  }
+  function recipeHTML(r) {
+    return '<article class="recipe"><p class="top-row"><span class="badge' + (r.offline ? " off" : "") + '">' + esc(r.offline ? L("badgeOffline") : L("badgeAi")) + "</span>" +
+      (r.time_min ? '<span class="meta">' + esc(L("aboutMin", { n: r.time_min })) + "</span>" : "") + "</p>" +
+      "<h3>" + esc(r.title) + "</h3>" +
+      "<h4>" + esc(L("ingredientsH")) + "</h4><ul>" + r.ingredients.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>" +
+      "<h4>" + esc(L("stepsH")) + "</h4><ol>" + r.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" +
+      (r.tip ? "<h4>" + esc(L("tipH")) + "</h4><p>" + esc(r.tip) + "</p>" : "") +
+      '<p class="allergy">' + esc(L("allergy")) + "</p></article>";
+  }
+  // Accept only the agreed shape; anything else counts as a failure.
+  function validRecipe(j) {
+    var r = j && j.recipe;
+    if (!r || typeof r.title !== "string" || !r.title.trim()) return null;
+    if (!Array.isArray(r.ingredients) || !Array.isArray(r.steps) || !r.steps.length || r.steps.length > 6) return null;
+    if (r.ingredients.some(function (s) { return typeof s !== "string"; }) || r.steps.some(function (s) { return typeof s !== "string"; })) return null;
+    var t = Number(r.time_min);
+    return { title: r.title, time_min: isFinite(t) && t > 0 && t <= 30 ? Math.round(t) : null, ingredients: r.ingredients, steps: r.steps, tip: typeof r.tip === "string" ? r.tip : "" };
+  }
+  function setStatus(html, err) { var s = $("rc-status"); s.innerHTML = html; s.classList.toggle("err", !!err); }
+  function renderRecipeOut() {
+    if (!rcResult) { $("rc-out").innerHTML = ""; return; }
+    $("rc-out").innerHTML = recipeHTML(rcResult);
+  }
+  function showFallback(ids) {
+    rcResult = offlineRecipe(ids);
+    setStatus(esc(rcResult ? L("aiFailed") : L("offlineNone")) + '<button type="button" class="btn secondary" id="rc-retry">' + esc(L("tryAgain")) + "</button>", true);
+    renderRecipeOut();
+  }
+  function askRecipe() {
+    if (rcBusy) return;
+    var ids = selectedVeg();
+    if (!ids.length) { setStatus(esc(L("needVeg")), true); return; }
+    rcBusy = true; rcResult = null; renderRecipeOut();
+    var btn = $("btn-recipe"); btn.disabled = true; btn.setAttribute("aria-busy", "true");
+    setStatus('<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>' + esc(L("thinking")));
+    var ctl = null; try { ctl = new AbortController(); } catch (e) {}
+    rcController = ctl;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, RECIPE_TIMEOUT_MS);
+    var body = JSON.stringify({ vegIds: ids, extra: $("rc-extra").value.trim().slice(0, 60), lang: lang });
+    var done = function () { clearTimeout(timer); rcBusy = false; btn.disabled = false; btn.removeAttribute("aria-busy"); };
+    var deadline = new Promise(function (_, rej) { setTimeout(function () { rej(new Error("timeout")); }, RECIPE_TIMEOUT_MS + 500); });
+    Promise.race([
+      fetch("api/recipe", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, signal: ctl ? ctl.signal : undefined })
+        .then(function (res) { return res.json().catch(function () { return null; }); }),
+      deadline
+    ]).then(function (j) {
+      var r = validRecipe(j);
+      if (!r) { showFallback(ids); return; }
+      rcResult = r; setStatus(""); renderRecipeOut();
+    }).catch(function () { showFallback(ids); }).then(function () {
+      done();
+      var out = $("rc-out"); if (out.firstChild) out.firstChild.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+  $("btn-recipe").addEventListener("click", askRecipe);
+  $("rc-status").addEventListener("click", function (e) { if (e.target.id === "rc-retry") askRecipe(); });
+
+  /* ================= 3. Q&A ================= */
+  var qaOpen = {};
+  function renderQA() {
+    $("qa-list").innerHTML = QA.map(function (item, i) {
+      var q = item.q ? Lx(item.q) : L("qTbc", { n: i + 1 });
+      var a = item.a ? Lx(item.a) : [L("aTbc")];
+      var paras = (Array.isArray(a) ? a : [a]).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      var ph = "";
+      if (item.photo) {
+        var src = photoSrc(item.photo);
+        ph = src
+          ? '<figure class="photo-fig"><img src="' + src + '" alt="' + esc(q) + '" loading="lazy" decoding="async"></figure>'
+          : '<div class="photo-slot" role="img" aria-label="' + esc(L("photoSoon")) + '"><strong>' + esc(L("photoSoon")) + "</strong></div>";
+      }
+      var links = item.sources.length
+        ? item.sources.map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(Lx(s.label) || s.url) + "</a>"; }).join("、")
+        : '<span class="tbc">' + esc(L("tbc")) + "</span>";
+      return '<details class="qa" data-id="' + item.id + '"' + (qaOpen[item.id] ? " open" : "") + '><summary><span class="qa-num" aria-hidden="true">' + (i + 1) + '</span><span class="qa-q">' + esc(q) + '</span></summary><div class="ans">' +
+        paras + ph + '<p class="sources">' + esc(L("sourceLbl")) + links + "</p></div></details>";
+    }).join("");
+  }
+  $("qa-list").addEventListener("toggle", function (e) {
+    var d = e.target; if (d && d.getAttribute) qaOpen[d.getAttribute("data-id")] = d.open;
+  }, true);
+
+  /* ================= Routing ================= */
+  var ROUTES = ["card", "recipe", "qa"];
+  function routeFromHash() { var h = (location.hash || "").replace(/^#\/?/, ""); return ROUTES.indexOf(h) >= 0 ? h : "card"; }
+  function show(r, moveFocus) {
+    scanCtl.cancelPress();
+    ROUTES.forEach(function (x) { $("r-" + x).hidden = x !== r; });
+    Array.prototype.forEach.call(document.querySelectorAll(".nav a"), function (a) {
+      if (a.getAttribute("data-r") === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (moveFocus) { window.scrollTo(0, 0); var h = $("h-" + r); if (h) h.focus({ preventScroll: true }); }
+  }
+  window.addEventListener("hashchange", function () { show(routeFromHash(), true); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) scanCtl.cancelPress(); });
+
+  function renderAll() {
+    applyChrome();
+    renderNameChips();
+    if (scanVeg) { scanCtl.render(); renderDetails(); }
+    renderColl();
+    renderRecipeChips();
+    renderRecipeOut();
+    renderQA();
+  }
+  renderAll();
+  goStep(1, false);
+  show(routeFromHash(), false);
+
+  // The image data block sits at the end of the document so the UI paints first on slow connections.
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!assets()) return;
+    if (scanCtl.ultra) scanCtl.render();
+    renderQA();
+  });
+})();
+</script>
+<script id="asset-data" type="application/json">{"ultra":{},"photos":{}}</script>
+</body>
+</html>

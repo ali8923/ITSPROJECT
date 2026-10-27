@@ -1,0 +1,17 @@
+{
+  "name": "market-kitchen",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test:api": "node --test tests/api.test.js",
+    "check:secrets": "sh scripts/check-secrets.sh",
+    "dev": "node tests/dev-server.mjs",
+    "test:e2e": "node tests/e2e.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.48.2"
+  }
+}
