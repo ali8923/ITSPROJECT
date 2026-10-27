@@ -45,3 +45,24 @@ It also covers:
 | Medium | Daily cap and rate limit are per instance (best effort). Set a quota at the provider |
 | Medium | iOS long-press callout, camera, HEIC and 48 MP photos need real phones (TODO.md) |
 | Low | Source links: 0 present until section A is filled in. The tests check that every item has a source line |
+
+## 40 VegCards (27 Oct)
+
+- e2e: **183 ok, 0 FAIL**. New checks:
+  - 40 "?" cards and the 1/40 counter;
+  - Show all reveals all 40;
+  - the yellow sweetcorn card with attack 45/95 from the data;
+  - the 冬菇 alias;
+  - Ultra art served from `art/` as `image/webp`;
+  - an Ultra PNG for a new card;
+  - the no-offline-recipe message for okra.
+- Contrast audit: unchanged, lowest 4.6:1.
+- Function tests: 10/10 with 40 ids.
+- `index.html`: 978 KB → **116 KB**. The Ultra art (3.3 MB for 40 cards) is fetched one image at a time when a card is opened.
+
+## Green identity + clay action style (27 Oct)
+
+- e2e **279 ok, 0 FAIL** (adds A+ passes, 44 px target check, Q&A number badges, the new collection tiles and counter). Function tests 10/10.
+- `node tests/style-audit.mjs`: **64 / 64 states pass 4.5:1**, lowest 4.76:1. Screenshots are in `tests/screenshots/style/`.
+- No hard-coded colours outside the token blocks (VegCard design exempt).
+- The long-press test was flaky in one run: it measured the card while the page was still smooth-scrolling to step 3, plus the new 6 px rise. A press that moves is cancelled by design, so the test now waits 700 ms, as a finger would. It was stable over 3 runs.

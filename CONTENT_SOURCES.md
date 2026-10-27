@@ -123,7 +123,7 @@ The function already enforces these rules, taken from the v3 brief. Confirm them
 
 ## C. Nutrition (per 100 g raw)
 
-For each vegetable: the figure, its source (e.g. a USDA FoodData Central entry URL), and the rounding rule. Leave choy sum and Chinese kale empty if they stay intentionally null.
+Only the 8 stall vegetables are listed here; the other 32 cards also show 待確認 until rows are added. For each vegetable: the figure, its source (e.g. a USDA FoodData Central entry URL), and the rounding rule. Leave choy sum and Chinese kale empty if they stay intentionally null.
 
 | Vegetable | kcal | Protein g | Fibre g | Vitamin C mg | Potassium mg | Source URL | Checked by / date |
 |---|---|---|---|---|---|---|---|
